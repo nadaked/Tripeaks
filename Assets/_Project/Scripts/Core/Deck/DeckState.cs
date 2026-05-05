@@ -26,15 +26,17 @@ namespace _Project.Scripts.Core.Deck
 
         public void AddToBottom(IEnumerable<CardData> cards)
         {
-            var temp = new Stack<CardData>(_cards);
+            var current = _cards.ToArray(); 
 
             _cards.Clear();
 
-            foreach (var card in cards)
-                _cards.Push(card);
+            var added = cards is CardData[] array ? array : new List<CardData>(cards).ToArray();
 
-            foreach (var card in temp)
-                _cards.Push(card);
+            for (var i = added.Length - 1; i >= 0; i--)
+                _cards.Push(added[i]);
+
+            for (var i = current.Length - 1; i >= 0; i--)
+                _cards.Push(current[i]);
         }
 
         public void AddToTop(CardData card)
@@ -47,16 +49,20 @@ namespace _Project.Scripts.Core.Deck
             if (count <= 0)
                 return;
 
-            var temp = new Stack<CardData>();
+            var cards = _cards.ToArray();
+
+            var keepCount = cards.Length - count;
+
+            if (keepCount <= 0)
+            {
+                _cards.Clear();
+                return;
+            }
+
+            _cards.Clear();
             
-            while (_cards.Count > count)
-                temp.Push(_cards.Pop());
-            
-            for (var i = 0; i < count && _cards.Count > 0; i++)
-                _cards.Pop();
-            
-            while (temp.Count > 0)
-                _cards.Push(temp.Pop());
+            for (var i = keepCount - 1; i >= 0; i--)
+                _cards.Push(cards[i]);
         }
     }
 }

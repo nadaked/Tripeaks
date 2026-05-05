@@ -97,12 +97,13 @@ namespace _Project.Scripts.Core.Game
 
                 _resolver.Resolve(_state, slot.UnlockAction, record);
                 state.MarkUnlockResolved();
+                record.UnlockResolvedSlots.Add(i);
             }
         }
 
         public bool Undo()
         {
-            if (_undo.CanUndo()) return false;
+            if (!_undo.CanUndo()) return false;
 
             var record = _undo.Pop();
             
@@ -113,7 +114,8 @@ namespace _Project.Scripts.Core.Game
             
             if (record.DrawnFromDeck.HasValue)
                 _state.Deck.AddToTop(record.DrawnFromDeck.Value);
-
+            
+            UnityEngine.Debug.Log($"AddedToDeck Count: {record.AddedToDeck.Count}");
             if (record.AddedToDeck.Count > 0)
                 _state.Deck.RemoveFromBottom(record.AddedToDeck.Count);
             
