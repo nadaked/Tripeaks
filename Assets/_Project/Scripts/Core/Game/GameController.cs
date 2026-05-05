@@ -27,7 +27,9 @@ namespace _Project.Scripts.Core.Game
 
             var card = _state.Deck.Draw();
             _state.Waste.Set(card);
-
+            
+            EvaluateGameStatus();
+            
             return true;
         }
 
@@ -59,6 +61,8 @@ namespace _Project.Scripts.Core.Game
             ResolveUnlockSlots(record);
             
             _undo.Push(record);
+            
+            EvaluateGameStatus();
 
             return true;
         }
@@ -78,7 +82,9 @@ namespace _Project.Scripts.Core.Game
             _state.Waste.Set(card);
             
             _undo.Push(record);
-
+            
+            EvaluateGameStatus();
+            
             return true;
         }
 
@@ -96,8 +102,12 @@ namespace _Project.Scripts.Core.Game
                 if (slot.UnlockAction.Type == GameActionType.None) continue;
 
                 _resolver.Resolve(_state, slot.UnlockAction, record);
+
                 state.MarkUnlockResolved();
                 record.UnlockResolvedSlots.Add(i);
+                
+                _state.Board.RemoveSlot(i);
+                record.RemovedSlots.Add(i);
             }
         }
 
@@ -125,7 +135,26 @@ namespace _Project.Scripts.Core.Game
             foreach (var slotIndex in record.UnlockResolvedSlots)
                 _state.Board.GetState(slotIndex).ResetUnlockResolved();
             
+            EvaluateGameStatus();
+            
             return true;
+        }
+        
+        private void EvaluateGameStatus()
+        {
+            if (!_state.Board.HasRemainingCards())
+            {
+                _state.SetStatus(GameStatus.Win);
+                return;
+            }
+
+            if (!_state.Deck.CanDraw())
+            {
+                _state.SetStatus(GameStatus.OutOfDeck);
+                return;
+            }
+
+            _state.SetStatus(GameStatus.Playing);
         }
     }
 }

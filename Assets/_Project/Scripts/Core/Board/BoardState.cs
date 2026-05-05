@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _Project.Scripts.Core.Board
 {
@@ -41,15 +42,7 @@ namespace _Project.Scripts.Core.Board
 
             var slot = _slots[index];
 
-            for (var i = 0; i < slot.BlockedBy.Length; i++)
-            {
-                var blockerIndex = slot.BlockedBy[i];
-
-                if (!IsRemoved(blockerIndex))
-                    return false;
-            }
-
-            return true;
+            return slot.BlockedBy.All(IsRemoved);
         }
 
         public IReadOnlyList<int> GetUnlockedSlotsAfterRemoving(int removedIndex)
@@ -76,6 +69,11 @@ namespace _Project.Scripts.Core.Board
         public void RestoreSlot(int index)
         {
             _states[index].Restore();
+        }
+        
+        public bool HasRemainingCards()
+        {
+            return _states.Any(slotState => !slotState.IsRemoved);
         }
     }
 }
