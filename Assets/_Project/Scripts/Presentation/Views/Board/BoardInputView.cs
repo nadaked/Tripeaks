@@ -2,6 +2,7 @@
 using UnityEngine.InputSystem;
 using _Project.Scripts.Application.Runtime;
 using _Project.Scripts.Application.Presenters;
+using _Project.Scripts.Presentation.Views.Card;
 
 namespace _Project.Scripts.Presentation.Views.Board
 {
@@ -34,14 +35,15 @@ namespace _Project.Scripts.Presentation.Views.Board
             if (!Physics.Raycast(ray, out var hit))
                 return;
 
-            if (!hit.collider.TryGetComponent(out SlotClickView slot))
+            var card = hit.collider.GetComponentInParent<BoardCardView>();
+            if (!card)
                 return;
 
-            var success = _presenter.PlayBoardSlot(slot.SlotIndex);
+            var success = _presenter.PlayBoardSlot(card.SlotIndex);
 
             Debug.Log(success
-                ? $"Played slot {slot.SlotIndex}"
-                : $"Cannot play slot {slot.SlotIndex}");
+                ? $"Played slot {card.SlotIndex}"
+                : $"Cannot play slot {card.SlotIndex}");
         }
     }
 }
