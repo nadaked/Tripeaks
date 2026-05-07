@@ -5,6 +5,7 @@
         Normal = 0,
 
         Wild = 1,
-        AddDeckCards = 2
+        AddDeckCards = 2,
+        DualRank = 3,
     }
 }

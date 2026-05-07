@@ -67,5 +67,16 @@ namespace _Project.Tests.EditMode.Core.Game
 
             Assert.IsTrue(_validator.CanPlay(board, waste));
         }
+        
+        [Test]
+        public void CanPlay_WhenDualRankMatchesAnyAdjacentRank_ReturnsTrue()
+        {
+            var card = CardData.DualRank(CardRank.Ace, CardRank.King);
+    
+            Assert.IsTrue(_validator.CanPlay(card, CardData.Normal(CardRank.Two, CardSuit.Spades)));
+            Assert.IsTrue(_validator.CanPlay(card, CardData.Normal(CardRank.Queen, CardSuit.Spades)));
+            Assert.IsTrue(_validator.CanPlay(card, CardData.Normal(CardRank.Ace, CardSuit.Spades)));
+            Assert.IsTrue(_validator.CanPlay(card, CardData.Normal(CardRank.King, CardSuit.Spades)));
+        }
     }
 }

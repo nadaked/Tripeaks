@@ -4,6 +4,7 @@
     public readonly struct CardData
     {
         public readonly CardRank Rank;
+        public readonly CardRank SecondRank;
         public readonly CardSuit Suit;
         public readonly CardType Type;
         public readonly int Value;
@@ -11,18 +12,31 @@
         public bool IsValid => Type != CardType.Normal || Rank != CardRank.None;
         public bool IsWild => Type == CardType.Wild;
         public bool IsAddDeckCards => Type == CardType.AddDeckCards;
+        public bool IsDualRank => Type == CardType.DualRank;
 
-        public CardData(CardRank rank, CardSuit suit, CardType type = CardType.Normal, int value = 0)
+        public CardData(
+            CardRank rank,
+            CardSuit suit,
+            CardType type = CardType.Normal,
+            int value = 0,
+            CardRank secondRank = CardRank.None
+        )
         {
             Rank = rank;
             Suit = suit;
             Type = type;
             Value = value;
+            SecondRank = secondRank;
         }
 
         public static CardData Normal(CardRank rank, CardSuit suit)
         {
             return new CardData(rank, suit, CardType.Normal);
+        }
+
+        public static CardData DualRank(CardRank firstRank, CardRank secondRank, CardSuit suit = CardSuit.None)
+        {
+            return new CardData(firstRank, suit, CardType.DualRank, 0, secondRank);
         }
 
         public static CardData Wild()

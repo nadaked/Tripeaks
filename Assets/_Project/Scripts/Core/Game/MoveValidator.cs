@@ -11,9 +11,18 @@ namespace _Project.Scripts.Core.Game
 
             if (fromBoard.IsWild)
                 return true;
+            
+            if (fromBoard.IsDualRank)
+                return IsAdjacent(fromBoard.Rank, waste.Rank) ||
+                       IsAdjacent(fromBoard.SecondRank, waste.Rank);
 
-            var a = (int)fromBoard.Rank;
-            var b = (int)waste.Rank;
+            return IsAdjacent(fromBoard.Rank, waste.Rank);
+        }
+
+        private static bool IsAdjacent(CardRank fromBoard, CardRank waste)
+        {
+            var a = (int)fromBoard;
+            var b = (int)waste;
 
             switch (a)
             {

@@ -25,6 +25,13 @@ namespace _Project.Scripts.Presentation.Views.Card
             if (!faceUp)
                 return;
 
+            if (card.IsDualRank)
+            {
+                rankText.text = $"{GetRankText(card.Rank)}-{GetRankText(card.SecondRank)}";
+                suitText.text = GetSuitText(card.Suit);
+                return;
+            }
+            
             rankText.text = GetRankText(card.Rank);
             suitText.text = GetSuitText(card.Suit);
         }
@@ -43,7 +50,14 @@ namespace _Project.Scripts.Presentation.Views.Card
                 specialText.text = "?";
         }
 
-        private string GetRankText(CardRank rank)
+        public void ShowBack()
+        {
+            front.SetActive(false);
+            back.SetActive(true);
+            special.SetActive(false);
+        }
+
+        private static string GetRankText(CardRank rank)
         {
             return rank switch
             {
@@ -56,7 +70,7 @@ namespace _Project.Scripts.Presentation.Views.Card
             };
         }
 
-        private string GetSuitText(CardSuit suit)
+        private static string GetSuitText(CardSuit suit)
         {
             return suit switch
             {

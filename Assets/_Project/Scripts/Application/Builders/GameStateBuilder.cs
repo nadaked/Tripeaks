@@ -14,7 +14,8 @@ namespace _Project.Scripts.Application.Builders
             {
                 new SlotData(
                     index: 0,
-                    card: CardData.Normal(CardRank.Five, CardSuit.Hearts),
+                    //card: CardData.Normal(CardRank.Five, CardSuit.Hearts),
+                    card: CardData.DualRank(CardRank.Ace, CardRank.King, CardSuit.Clubs),
                     blockedBy: new int[0]
                 ),
 
