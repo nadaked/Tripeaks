@@ -135,6 +135,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ff90fd2c114f888781f7886d3890ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Presentation.Views.Card.CardView
+--- !u!1 &161574657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 161574659}
+  - component: {fileID: 161574658}
+  m_Layer: 0
+  m_Name: GameAnimationDirector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &161574658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161574657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0c9796396c4c53932f357622bedf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Presentation.Animations.GameAnimationDirector
+  bootstrapper: {fileID: 948505004}
+  boardView: {fileID: 860891162}
+  wasteView: {fileID: 889336977}
+  deckView: {fileID: 909618763}
+  ghostCardPrefab: {fileID: 1838199141369670836, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
+  ghostRoot: {fileID: 161574659}
+  flyDuration: 0.35
+  arcHeight: 1.2
+  rotateDegrees: 360
+  deckToWasteDuration: 0.28
+  flipDuration: 0.18
+  rewardSpawnInterval: 0.07
+  rewardFlyDuration: 0.22
+--- !u!4 &161574659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161574657}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.2805, y: -2.03151, z: 0.49937}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &313557700
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,28 +1014,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1320266737}
-  - component: {fileID: 1320266736}
   m_Layer: 0
   m_Name: Undo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1320266736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320266735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05d5a200d7a944ba96a54c24a5b98424, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Presentation.Views.Deck.WasteView
-  bootstrapper: {fileID: 948505004}
-  cardView: {fileID: 1777277989}
+  m_IsActive: 0
 --- !u!4 &1320266737
 Transform:
   m_ObjectHideFlags: 0
@@ -1174,28 +1216,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3582601684018544324, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 8034616708173279755, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1128067117119981943, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
---- !u!114 &1777277989 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1838199141369670836, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
-  m_PrefabInstance: {fileID: 1777277988}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9ff90fd2c114f888781f7886d3890ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Presentation.Views.Card.CardView
 --- !u!4 &1777277990 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 427316450351300165, guid: 042253ff1e777684f9248d1e88a42815, type: 3}
@@ -1520,3 +1542,4 @@ SceneRoots:
   - {fileID: 1320266737}
   - {fileID: 381830239}
   - {fileID: 860891163}
+  - {fileID: 161574659}

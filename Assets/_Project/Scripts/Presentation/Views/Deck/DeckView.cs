@@ -82,5 +82,10 @@ namespace _Project.Scripts.Presentation.Views.Deck
             if (countText != null)
                 countText.text = deckCount.ToString();
         }
+
+        public Vector3 GetWorldPosition()
+        {
+            return transform.position;
+        }
     }
 }

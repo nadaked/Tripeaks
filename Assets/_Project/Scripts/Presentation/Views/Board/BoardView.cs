@@ -55,5 +55,14 @@ namespace _Project.Scripts.Presentation.Views.Board
                 cards[i].Sync(slot.Card, selectable, removed);
             }
         }
+
+        public Vector3 GetCardWorldPosition(int slotIndex)
+        {
+            if (cards == null) return transform.position;
+            
+            if (slotIndex < 0 || slotIndex >= cards.Length) return transform.position;
+            
+            return cards[slotIndex] == null ? transform.position : cards[slotIndex].transform.position;
+        }
     }
 }

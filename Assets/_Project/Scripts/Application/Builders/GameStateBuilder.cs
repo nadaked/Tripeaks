@@ -28,9 +28,8 @@ namespace _Project.Scripts.Application.Builders
 
                 new SlotData(
                     index: 2,
-                    card: CardData.Wild(),
-                    blockedBy: new[] { 0 },
-                    unlockAction: GameAction.AddWildToDeck(1)
+                    card: CardData.Normal(CardRank.Five, CardSuit.Clubs),
+                    blockedBy: new[] { 0 }
                 )
             };
 

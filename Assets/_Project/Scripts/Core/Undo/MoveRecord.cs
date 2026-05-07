@@ -5,7 +5,7 @@ namespace _Project.Scripts.Core.Undo
 {
     public sealed class MoveRecord
     {
-        public int PlayedSlotIndex;
+        public int PlayedSlotIndex = -1;
 
         public CardData PreviousWaste;
         public bool HadWaste;

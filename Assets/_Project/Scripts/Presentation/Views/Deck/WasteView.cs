@@ -51,5 +51,10 @@ namespace _Project.Scripts.Presentation.Views.Deck
             else
                 cardView.ShowNormal(card, true);
         }
+
+        public Vector3 GetWorldPosition()
+        {
+            return transform.position;
+        }
     }
 }
