@@ -53,10 +53,10 @@ namespace _Project.Tests.EditMode.Core.Game
             var undoResult = controller.Undo();
             var deckCountAfterUndo = state.Deck.Count;
 
-            Assert.IsTrue(played);
+            Assert.IsTrue(played.Success);
             Assert.AreEqual(deckCountBefore + 6, deckCountAfterPlay);
 
-            Assert.IsTrue(undoResult);
+            Assert.IsTrue(undoResult.Success);
             Assert.AreEqual(deckCountBefore, deckCountAfterUndo);
 
             Assert.IsFalse(state.Board.IsRemoved(0));

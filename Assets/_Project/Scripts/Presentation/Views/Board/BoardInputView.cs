@@ -39,9 +39,9 @@ namespace _Project.Scripts.Presentation.Views.Board
             if (!card)
                 return;
 
-            var success = _presenter.PlayBoardSlot(card.SlotIndex);
+            var result = _presenter.PlayBoardSlot(card.SlotIndex);
 
-            Debug.Log(success
+            Debug.Log(result.Success
                 ? $"Played slot {card.SlotIndex}"
                 : $"Cannot play slot {card.SlotIndex}");
         }

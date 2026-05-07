@@ -19,29 +19,34 @@ namespace _Project.Scripts.Core.Game
             _undo = new UndoSystem();
         }
 
-        public bool StartGame()
+        public GameMoveResult StartGame()
         {
-            if (_state.Waste.HasCard) return false;
+            if (_state.Waste.HasCard) return GameMoveResult.Failed(GameMoveType.StartGame);
             
-            if (!_state.Deck.CanDraw()) return false;
-
+            if (!_state.Deck.CanDraw()) return GameMoveResult.Failed(GameMoveType.StartGame);
+            
+            var record = new MoveRecord();
+            
             var card = _state.Deck.Draw();
+            record.DrawnFromDeck = card;
+            
             _state.Waste.Set(card);
+            record.NewWaste = card;
             
             EvaluateGameStatus();
             
-            return true;
+            return GameMoveResult.Succeeded(GameMoveType.StartGame, record);;
         }
 
-        public bool TryPlayFromBoard(int slotIndex)
+        public GameMoveResult TryPlayFromBoard(int slotIndex)
         {
             if (!_state.Board.IsSelectable(slotIndex))
-                return false;
+                return GameMoveResult.Failed(GameMoveType.PlayFromBoard);
 
             var slot = _state.Board.GetSlot(slotIndex);
 
             if (!_validator.CanPlay(slot.Card, _state.Waste.Current))
-                return false;
+                return GameMoveResult.Failed(GameMoveType.PlayFromBoard);
 
             var record = new MoveRecord
             {
@@ -64,13 +69,13 @@ namespace _Project.Scripts.Core.Game
             
             EvaluateGameStatus();
 
-            return true;
+            return GameMoveResult.Succeeded(GameMoveType.PlayFromBoard, record);
         }
 
-        public bool TryDrawFromDeck()
+        public GameMoveResult TryDrawFromDeck()
         {
             if (!_state.Deck.CanDraw())
-                return false;
+                return GameMoveResult.Failed(GameMoveType.DrawFromDeck);
             var record = new MoveRecord
             {
                 PreviousWaste = _state.Waste.Current,
@@ -85,7 +90,7 @@ namespace _Project.Scripts.Core.Game
             
             EvaluateGameStatus();
             
-            return true;
+            return GameMoveResult.Succeeded(GameMoveType.DrawFromDeck, record);
         }
 
         private void ResolveUnlockSlots(MoveRecord record)
@@ -111,9 +116,9 @@ namespace _Project.Scripts.Core.Game
             }
         }
 
-        public bool Undo()
+        public GameMoveResult Undo()
         {
-            if (!_undo.CanUndo()) return false;
+            if (!_undo.CanUndo()) return GameMoveResult.Failed(GameMoveType.Undo);
 
             var record = _undo.Pop();
             
@@ -137,7 +142,7 @@ namespace _Project.Scripts.Core.Game
             
             EvaluateGameStatus();
             
-            return true;
+            return GameMoveResult.Succeeded(GameMoveType.Undo, record);
         }
         
         private void EvaluateGameStatus()

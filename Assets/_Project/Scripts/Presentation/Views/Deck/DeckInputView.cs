@@ -37,9 +37,9 @@ namespace _Project.Scripts.Presentation.Views.Deck
             if (hit.collider != deckCollider)
                 return;
 
-            var success = _presenter.DrawFromDeck();
+            var result = _presenter.DrawFromDeck();
 
-            Debug.Log(success ? "Draw from deck" : "Cannot draw from deck");
+            Debug.Log(result.Success ? "Draw from deck" : "Cannot draw from deck");
         }
     }
 }

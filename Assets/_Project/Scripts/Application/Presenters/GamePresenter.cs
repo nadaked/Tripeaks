@@ -9,7 +9,8 @@ namespace _Project.Scripts.Application.Presenters
         private readonly GameState _state;
 
         public GameState State => _state;
-
+        
+        public event Action<GameMoveResult> MovePerformed;
         public event Action StateChanged;
 
         public GamePresenter(GameState state, GameController controller)
@@ -18,44 +19,48 @@ namespace _Project.Scripts.Application.Presenters
             _controller = controller;
         }
 
-        public bool StartGame()
+        public GameMoveResult StartGame()
         {
-            var success = _controller.StartGame();
+            var result = _controller.StartGame();
 
-            if (success)
-                StateChanged?.Invoke();
+            if (!result.Success) return result;
+            MovePerformed?.Invoke(result);
+            StateChanged?.Invoke();
 
-            return success;
+            return result;
         }
 
-        public bool PlayBoardSlot(int slotIndex)
+        public GameMoveResult PlayBoardSlot(int slotIndex)
         {
-            var success = _controller.TryPlayFromBoard(slotIndex);
+            var result = _controller.TryPlayFromBoard(slotIndex);
 
-            if (success)
-                StateChanged?.Invoke();
+            if (!result.Success) return result;
+            MovePerformed?.Invoke(result);
+            StateChanged?.Invoke();
 
-            return success;
+            return result;
         }
 
-        public bool DrawFromDeck()
+        public GameMoveResult DrawFromDeck()
         {
-            var success = _controller.TryDrawFromDeck();
+            var result = _controller.TryDrawFromDeck();
 
-            if (success)
-                StateChanged?.Invoke();
+            if (!result.Success) return result;
+            MovePerformed?.Invoke(result);
+            StateChanged?.Invoke();
 
-            return success;
+            return result;
         }
 
-        public bool Undo()
+        public GameMoveResult Undo()
         {
-            var success = _controller.Undo();
+            var result = _controller.Undo();
 
-            if (success)
-                StateChanged?.Invoke();
+            if (!result.Success) return result;
+            MovePerformed?.Invoke(result);
+            StateChanged?.Invoke();
 
-            return success;
+            return result;
         }
     }
 }
