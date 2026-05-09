@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using _Project.Scripts.Application.Runtime;
@@ -38,6 +39,11 @@ namespace _Project.Scripts.Presentation.Views.Deck
         {
             if (_presenter != null)
                 _presenter.StateChanged -= Sync;
+
+            foreach (var card in _cards.Where(card => card != null))
+            {
+                card.Clicked -= OnDeckClicked;
+            }
         }
 
         private void CreateStack()
@@ -46,7 +52,7 @@ namespace _Project.Scripts.Presentation.Views.Deck
             {
                 var card = Instantiate(cardPrefab, stackRoot);
                 card.ShowBack();
-
+                card.Clicked += OnDeckClicked;
                 _cards.Add(card);
             }
         }
@@ -69,7 +75,10 @@ namespace _Project.Scripts.Presentation.Views.Deck
                 _cards[i].ShowBack();
 
                 var reverseIndex = visibleCount - 1 - i;
-
+                
+                var isTopClickable = i == visibleCount - 1;
+                _cards[i].SetClickEnabled(isTopClickable);
+                
                 _cards[i].transform.localPosition = new Vector3(
                     -reverseIndex * xOffset,
                     0f,
@@ -86,6 +95,11 @@ namespace _Project.Scripts.Presentation.Views.Deck
         public Vector3 GetWorldPosition()
         {
             return transform.position;
+        }
+        
+        private void OnDeckClicked()
+        {
+            _presenter.DrawFromDeck();
         }
     }
 }

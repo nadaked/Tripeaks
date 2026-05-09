@@ -45,11 +45,8 @@ namespace _Project.Scripts.Presentation.Views.Deck
             }
 
             gameObject.SetActive(true);
-
-            if (card.IsWild)
-                cardView.ShowSpecial(card);
-            else
-                cardView.ShowNormal(card, true);
+            
+            cardView.ShowCard(card, true);
         }
 
         public Vector3 GetWorldPosition()

@@ -20,7 +20,7 @@ namespace _Project.Scripts.Presentation.Views.Board
                 if (cards[i] == null)
                     continue;
 
-                cards[i].Init(i);
+                cards[i].Init(i, _presenter);
             }
 
             _presenter.StateChanged += Sync;

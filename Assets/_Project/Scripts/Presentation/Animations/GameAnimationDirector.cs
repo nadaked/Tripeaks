@@ -1,6 +1,7 @@
 ﻿using System;
 using _Project.Scripts.Application.Presenters;
 using _Project.Scripts.Application.Runtime;
+using _Project.Scripts.Core.Cards;
 using _Project.Scripts.Core.Game;
 using _Project.Scripts.Presentation.Views.Board;
 using _Project.Scripts.Presentation.Views.Card;
@@ -90,7 +91,7 @@ namespace _Project.Scripts.Presentation.Animations
             var ghost = Instantiate(ghostCardPrefab, ghostRoot);
             ghost.transform.position = from;
             ghost.transform.rotation = Quaternion.identity;
-
+            ghost.transform.localScale = Vector3.one;
             ghost.ShowBack();
 
             var seq = DOTween.Sequence();
@@ -101,20 +102,9 @@ namespace _Project.Scripts.Presentation.Animations
                     .SetEase(Ease.OutCubic)
             );
 
-            seq.Join(
-                ghost.transform
-                    .DORotate(new Vector3(0f, 180f, 0f), flipDuration)
-                    .SetEase(Ease.InOutSine)
-                    .OnComplete(() =>
-                    {
-                        if (card.IsWild)
-                            ghost.ShowSpecial(card);
-                        else
-                            ghost.ShowNormal(card, true);
-                    })
-            );
+            seq.Join(FlipToCard(ghost, card));
 
-            /*seq.Append(
+            seq.Append(
                 ghost.transform
                     .DOScale(new Vector3(1.12f, 0.88f, 1f), 0.07f)
                     .SetEase(Ease.OutQuad)
@@ -124,9 +114,12 @@ namespace _Project.Scripts.Presentation.Animations
                 ghost.transform
                     .DOScale(Vector3.one, 0.1f)
                     .SetEase(Ease.OutBack)
-            );*/
+            );
 
-            seq.OnComplete(() => Destroy(ghost.gameObject));
+            seq.OnComplete(() =>
+            {
+                Destroy(ghost.gameObject);
+            });
         }
 
         private void PlayRewardAnimations(GameMoveResult result)
@@ -137,105 +130,159 @@ namespace _Project.Scripts.Presentation.Animations
                 return;
 
             var target = deckView.GetWorldPosition();
+            var cardIndex = 0;
 
-            for (var i = 0; i < record.AddedToDeck.Count; i++)
+            foreach (var sourceSlotIndex in record.UnlockResolvedSlots)
             {
-                var card = record.AddedToDeck[i];
+                var sourceSlot = _presenter.State.Board.GetSlot(sourceSlotIndex);
 
-                var ghost = Instantiate(ghostCardPrefab, ghostRoot);
+                if (!sourceSlot.Card.IsWild && !sourceSlot.Card.IsAddDeckCards)
+                    continue;
 
-                ghost.transform.position = target + new Vector3(0f, 1.2f, 0f);
-                ghost.transform.rotation = Quaternion.identity;
-                ghost.transform.localScale = Vector3.zero;
+                var amount = sourceSlot.Card.IsAddDeckCards ? sourceSlot.Card.Value : 1;
+                var from = boardView.GetCardWorldPosition(sourceSlotIndex);
 
-                if (card.IsWild)
-                    ghost.ShowSpecial(card);
-                else
-                    ghost.ShowBack();
-
-                var delay = i * rewardSpawnInterval;
-
-                var seq = DOTween.Sequence();
-                seq.SetDelay(delay);
-
-                /*seq.Append(
-                    ghost.transform
-                        .DOScale(Vector3.one, 0.08f)
-                        .SetEase(Ease.OutBack)
-                );
-
-                seq.Append(
-                    ghost.transform
-                        .DOMove(target, rewardFlyDuration)
-                        .SetEase(Ease.InCubic)
-                );*/
-
-                seq.Join(
-                    ghost.transform
-                        .DORotate(new Vector3(0f, 360f, 0f), rewardFlyDuration, RotateMode.FastBeyond360)
-                );
-
-                seq.OnComplete(() => Destroy(ghost.gameObject));
+                for (var i = 0; i < amount && cardIndex < record.AddedToDeck.Count; i++)
+                {
+                    var card = record.AddedToDeck[cardIndex++];
+                    PlayRewardCardFly(card, from, target, i);
+                }
             }
+        }
+        
+        private void PlayRewardCardFly(CardData card, Vector3 from, Vector3 target, int index)
+        {
+            var ghost = Instantiate(ghostCardPrefab, ghostRoot);
+
+            ghost.transform.position = from;
+            ghost.transform.rotation = Quaternion.identity;
+            ghost.transform.localScale = Vector3.one;
+
+            ghost.ShowBack();
+
+            var delay = index * rewardSpawnInterval;
+
+            var mid = new Vector3(
+                (from.x + target.x) * 0.5f,
+                Mathf.Max(from.y, target.y) + arcHeight,
+                (from.z + target.z) * 0.5f
+            );
+
+            var seq = DOTween.Sequence();
+            seq.SetDelay(delay);
+
+            seq.Append(
+                ghost.transform
+                    .DOPath(new[] { from, mid, target }, rewardFlyDuration, PathType.CatmullRom)
+                    .SetEase(Ease.OutCubic)
+            );
+
+            seq.Join(
+                ghost.transform
+                    .DORotate(new Vector3(0f, 0f, 360f), rewardFlyDuration, RotateMode.FastBeyond360)
+                    .SetEase(Ease.OutCubic)
+            );
+
+            seq.Append(
+                ghost.transform
+                    .DOScale(new Vector3(1.12f, 0.88f, 1f), 0.06f)
+                    .SetEase(Ease.OutQuad)
+            );
+
+            seq.Append(
+                ghost.transform
+                    .DOScale(Vector3.one, 0.08f)
+                    .SetEase(Ease.OutBack)
+            );
+
+            seq.OnComplete(() =>
+            {
+                Destroy(ghost.gameObject);
+            });
         }
 
         private void PlayBoardToWaste(GameMoveResult result)
         {
             var record = result.Record;
-            
+
             if (record.PlayedSlotIndex < 0)
+                return;
+
+            var playedSlot = _presenter.State.Board.GetSlot(record.PlayedSlotIndex);
+            var playedCard = playedSlot.Card;
+
+            if (playedCard.IsWild || playedCard.IsAddDeckCards)
                 return;
 
             var from = boardView.GetCardWorldPosition(record.PlayedSlotIndex);
             var to = wasteView.GetWorldPosition();
 
-            //TODO: make me pool
             var ghost = Instantiate(ghostCardPrefab, ghostRoot);
             ghost.transform.position = from;
             ghost.transform.rotation = Quaternion.identity;
-
-            ghost.ShowNormal(record.NewWaste, true);
+            ghost.transform.localScale = Vector3.one;
+            ghost.ShowCard(record.NewWaste, true);
 
             var mid = new Vector3(
                 (from.x + to.x) * 0.5f,
                 Mathf.Max(from.y, to.y) + arcHeight,
-                (from.z + to.z) * .5f
+                (from.z + to.z) * 0.5f
             );
 
-            var path = new[] { from, mid, to };
+            var seq = DOTween.Sequence();
 
-            var sequence = DOTween.Sequence();
-
-            sequence.Join(
+            seq.Append(
                 ghost.transform
-                    .DOPath(path, flyDuration, PathType.CatmullRom)
+                    .DOPath(new[] { from, mid, to }, flyDuration, PathType.CatmullRom)
                     .SetEase(Ease.OutCubic)
             );
 
-            sequence.Join(
+            seq.Join(
                 ghost.transform
-                    .DORotate(new Vector3(0f, rotateDegrees, 0f), flyDuration, RotateMode.FastBeyond360)
+                    .DORotate(new Vector3(0f, 0f, rotateDegrees), flyDuration, RotateMode.FastBeyond360)
                     .SetEase(Ease.OutCubic)
             );
 
-            //TODO: limon sıkma yapılacak
-            /*sequence.Append(
+            seq.Append(
                 ghost.transform
-                    .DOScale(new Vector3(1.15f, 0.85f, 1f), 0.08f)
+                    .DOScale(new Vector3(1.15f, 0.85f, 1f), 0.07f)
                     .SetEase(Ease.OutQuad)
             );
 
-            sequence.Append(
+            seq.Append(
                 ghost.transform
                     .DOScale(Vector3.one, 0.1f)
                     .SetEase(Ease.OutBack)
-            );*/
+            );
 
-            sequence.OnComplete(() =>
+            seq.OnComplete(() =>
             {
-                //TODO: return to pool
                 Destroy(ghost.gameObject);
             });
+        }
+        
+        private Tween FlipToCard(CardView cardView, CardData card)
+        {
+            var seq = DOTween.Sequence();
+
+            seq.Append(
+                cardView.transform
+                    .DOScaleX(0f, flipDuration * 0.5f)
+                    .SetEase(Ease.InQuad)
+            );
+
+            seq.AppendCallback(() =>
+            {
+                cardView.ShowCard(card, true);
+            });
+
+            seq.Append(
+                cardView.transform
+                    .DOScaleX(1f, flipDuration * 0.5f)
+                    .SetEase(Ease.OutQuad)
+            );
+
+            return seq;
         }
     }
 }

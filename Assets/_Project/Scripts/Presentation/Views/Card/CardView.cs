@@ -1,85 +1,78 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using _Project.Scripts.Core.Cards;
+using _Project.Scripts.Presentation.Data;
 
 namespace _Project.Scripts.Presentation.Views.Card
 {
-    public sealed class CardView : MonoBehaviour
+    public sealed class CardView : MonoBehaviour, IPointerDownHandler
     {
-        [Header("Faces")]
-        [SerializeField] private GameObject front;
-        [SerializeField] private GameObject back;
-        [SerializeField] private GameObject special;
+        public event Action Clicked;
 
-        [Header("Texts")]
-        [SerializeField] private TMP_Text rankText;
-        [SerializeField] private TMP_Text suitText;
+        [Header("Refs")]
+        [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private TMP_Text specialText;
 
-        public void ShowNormal(CardData card, bool faceUp)
-        {
-            front.SetActive(faceUp);
-            back.SetActive(!faceUp);
-            special.SetActive(false);
-
-            if (!faceUp)
-                return;
-
-            if (card.IsDualRank)
-            {
-                rankText.text = $"{GetRankText(card.Rank)}-{GetRankText(card.SecondRank)}";
-                suitText.text = GetSuitText(card.Suit);
-                return;
-            }
-            
-            rankText.text = GetRankText(card.Rank);
-            suitText.text = GetSuitText(card.Suit);
-        }
-
-        public void ShowSpecial(CardData card)
-        {
-            front.SetActive(false);
-            back.SetActive(false);
-            special.SetActive(true);
-
-            if (card.IsWild)
-                specialText.text = "WILD";
-            else if (card.IsAddDeckCards)
-                specialText.text = $"+{card.Value}";
-            else
-                specialText.text = "?";
-        }
-
+        [Header("Data")]
+        [SerializeField] private CardSpriteLibrary spriteLibrary;
+        
         public void ShowBack()
         {
-            front.SetActive(false);
-            back.SetActive(true);
-            special.SetActive(false);
+            if (spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+
+            spriteRenderer.sprite = spriteLibrary.BackSprite;
+
+            if (specialText != null)
+                specialText.gameObject.SetActive(false);
         }
 
-        private static string GetRankText(CardRank rank)
+        public void ShowCard(CardData card, bool faceUp)
         {
-            return rank switch
+
+            if (!faceUp)
             {
-                CardRank.Ace => "A",
-                CardRank.Jack => "J",
-                CardRank.Queen => "Q",
-                CardRank.King => "K",
-                CardRank.Ten => "10",
-                _ => ((int)rank).ToString()
-            };
+                ShowBack();
+                return;
+            }
+
+            if (spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+
+            spriteRenderer.sprite = spriteLibrary.GetCardSprite(card);
+
+            if (specialText != null)
+            {
+                var isSpecial = card.IsAddDeckCards;
+                specialText.gameObject.SetActive(isSpecial);
+                
+                if (isSpecial)
+                    specialText.text = $"+{card.Value}";
+            }
         }
 
-        private static string GetSuitText(CardSuit suit)
+        public void SetSpriteLibrary(CardSpriteLibrary library)
         {
-            return suit switch
-            {
-                CardSuit.Clubs => "♣",
-                CardSuit.Diamonds => "♦",
-                CardSuit.Hearts => "♥",
-                CardSuit.Spades => "♠",
-                _ => ""
-            };
+            spriteLibrary = library;
+        }
+        
+        private bool _clickEnabled = true;
+
+        public void SetClickEnabled(bool clickEnabled)
+        {
+            _clickEnabled = clickEnabled;
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            Debug.Log("OnPointerDown");
+            if (!_clickEnabled)
+                return;
+
+            Debug.Log("OnPointerDown after if");
+            Clicked?.Invoke();
         }
     }
 }

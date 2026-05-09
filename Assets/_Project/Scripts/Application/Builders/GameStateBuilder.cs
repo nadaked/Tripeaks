@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Core.Actions;
+﻿using System;
+using _Project.Scripts.Core.Actions;
 using _Project.Scripts.Core.Board;
 using _Project.Scripts.Core.Cards;
 using _Project.Scripts.Core.Deck;
@@ -14,9 +15,9 @@ namespace _Project.Scripts.Application.Builders
             {
                 new SlotData(
                     index: 0,
-                    //card: CardData.Normal(CardRank.Five, CardSuit.Hearts),
-                    card: CardData.DualRank(CardRank.Ace, CardRank.King, CardSuit.Clubs),
-                    blockedBy: new int[0]
+                    card: CardData.Normal(CardRank.Five, CardSuit.Hearts),
+                    //card: CardData.DualRank(CardRank.Ace, CardRank.King, CardSuit.Clubs),
+                    blockedBy: Array.Empty<int>()
                 ),
 
                 new SlotData(

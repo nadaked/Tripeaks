@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9095136621da4ca2a6f25b43a040af44, type: 3}
+  m_Name: CardSpriteLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Presentation.Data.CardSpriteLibrary
+  diamondSprites:
+  - {fileID: 21300000, guid: 7965f4fc5e08d714a85b2ece8dda808e, type: 3}
+  - {fileID: 21300000, guid: 168e35d2676fbd342b16d3c7cd36aae6, type: 3}
+  - {fileID: 21300000, guid: 9abe4228101c0e54e91d64a304f68940, type: 3}
+  - {fileID: 21300000, guid: 389cfe1e719ddf74aa592c1eed366c37, type: 3}
+  - {fileID: 21300000, guid: 80d2fa32478de8142b836b94c93973f3, type: 3}
+  - {fileID: 21300000, guid: 2bbb5ad9e5b196844a8a130b1ccdff07, type: 3}
+  - {fileID: 21300000, guid: 0413e1e23cac34448bfa998d5ecf8bef, type: 3}
+  - {fileID: 21300000, guid: 13670bfa47d14ce43ad9b23fbdc4a85d, type: 3}
+  - {fileID: 21300000, guid: 7c77681da0dee2d45979d9f49fd70746, type: 3}
+  - {fileID: 21300000, guid: f244c1533f48a7648948e0ca39bdb458, type: 3}
+  - {fileID: 21300000, guid: 4198f132015460649abfdb0545d81260, type: 3}
+  - {fileID: 21300000, guid: 0156c865cf9683f41887914de76e3c66, type: 3}
+  - {fileID: 21300000, guid: b420c1beee15c0e4ea7650360e017599, type: 3}
+  diamondDualSprites: []
+  clubsSprites:
+  - {fileID: 21300000, guid: 9684a4b61f9460a419e08cdc5a66a2e0, type: 3}
+  - {fileID: 21300000, guid: 6d1018f6433d1e84ca3bd49ed3151443, type: 3}
+  - {fileID: 21300000, guid: 4b8dda74b5fed1045b0a07d2a3fc7a83, type: 3}
+  - {fileID: 21300000, guid: c16819029b8234b48ba9799fbd996f20, type: 3}
+  - {fileID: 21300000, guid: ea67962ebfb81944e9216f986d54eff1, type: 3}
+  - {fileID: 21300000, guid: 69fedc4c30ff8234ab6370e3302b5f31, type: 3}
+  - {fileID: 21300000, guid: aa0229993d8aaca46b1a00c2585cd451, type: 3}
+  - {fileID: 21300000, guid: 5b16696c66bc4b34283d5b80d68c6702, type: 3}
+  - {fileID: 21300000, guid: 2dd8fbd735dc74e40b85ccee61f2302c, type: 3}
+  - {fileID: 21300000, guid: 712775e1f36f2624f842cc15c4ce0bb2, type: 3}
+  - {fileID: 21300000, guid: 5a1d2ebe30d3595469e4c1402c6d53d3, type: 3}
+  - {fileID: 21300000, guid: fc3399a3be5e3da4b925753ea77db785, type: 3}
+  - {fileID: 21300000, guid: 09d2b6072c8f3a04bb28ed20d78b369d, type: 3}
+  clubsDualSprites: []
+  heartSprites:
+  - {fileID: 21300000, guid: 52b69b258c5cbb4478a687585a15c727, type: 3}
+  - {fileID: 21300000, guid: 55cb2c852e6565a468b952b4f7ee584e, type: 3}
+  - {fileID: 21300000, guid: 4b2b645fd622ac446bf0540fb27e4890, type: 3}
+  - {fileID: 21300000, guid: 8f5c714415ba7af47813f24133710ad4, type: 3}
+  - {fileID: 21300000, guid: ea50a07ff980e5a47b50b61e96b578fc, type: 3}
+  - {fileID: 21300000, guid: 68a817d865130214899071f8a6822226, type: 3}
+  - {fileID: 21300000, guid: 9a7ac67c1fdff9a43920eb9f018ff1d4, type: 3}
+  - {fileID: 21300000, guid: b36760dc6ffcbfc42aa757b36ee7b18f, type: 3}
+  - {fileID: 21300000, guid: 52df1697e7a312b4b85d5a1e9ebc5b46, type: 3}
+  - {fileID: 21300000, guid: eebb8e835018bb649a13b55849da97db, type: 3}
+  - {fileID: 21300000, guid: 878d3ee8e644ad34e8e13effb7741839, type: 3}
+  - {fileID: 21300000, guid: 4fa31114510a5df42915f7cd834e9eef, type: 3}
+  - {fileID: 21300000, guid: 7f080d850f9e62144849c8bfa3ce65be, type: 3}
+  heartDualSprites: []
+  spadeSprites:
+  - {fileID: 21300000, guid: c81592eb5d3ce8f4bb4ec4fc6ad04cc2, type: 3}
+  - {fileID: 21300000, guid: 897a225e615872f4a99082f59b858484, type: 3}
+  - {fileID: 21300000, guid: d97193d6dcdd225429e730200f21540c, type: 3}
+  - {fileID: 21300000, guid: c8cc5274b4af6974e8b8b44d90f1793d, type: 3}
+  - {fileID: 21300000, guid: e3b8aad40afff634281405840e508201, type: 3}
+  - {fileID: 21300000, guid: 118617d0b0a096a45a42fbe39a893b69, type: 3}
+  - {fileID: 21300000, guid: e4af2e15eaf5daa449ea3fab6ccd110b, type: 3}
+  - {fileID: 21300000, guid: 41176abbf9a7b754aa1b1f9f43956718, type: 3}
+  - {fileID: 21300000, guid: ad55a7dc6de4a9940944bc8604dfb86e, type: 3}
+  - {fileID: 21300000, guid: 5fb876593f9cc5a4393301b87c2a7df9, type: 3}
+  - {fileID: 21300000, guid: b73344f767ce8cf49b98d171a71da3df, type: 3}
+  - {fileID: 21300000, guid: 6c593f736d421be42a5fe9ef63484590, type: 3}
+  - {fileID: 21300000, guid: 0b10c933a048bc14d9c6ef00be941d90, type: 3}
+  spadeDualSprites: []
+  backSprite: {fileID: 21300000, guid: 8520720f3dd276c4b99fbee5ec375451, type: 3}
+  wildSprite: {fileID: 21300000, guid: a221803c1d6fd9542b265167034ed2cf, type: 3}
+  specialSprite: {fileID: 21300000, guid: 92694ad00d317e147856fe064684adf8, type: 3}
