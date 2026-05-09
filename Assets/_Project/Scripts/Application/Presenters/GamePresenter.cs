@@ -1,5 +1,6 @@
 ﻿using System;
 using _Project.Scripts.Core.Game;
+using _Project.Scripts.Core.Undo;
 
 namespace _Project.Scripts.Application.Presenters
 {
@@ -54,13 +55,35 @@ namespace _Project.Scripts.Application.Presenters
 
         public GameMoveResult Undo()
         {
+            if (!_controller.CanUndo())
+                return GameMoveResult.Failed(GameMoveType.Undo);
+
+            var record = _controller.PeekUndoRecord();
+            var visualResult = GameMoveResult.Succeeded(GameMoveType.Undo, record);
+
+            MovePerformed?.Invoke(visualResult);
+
+            return visualResult;
+        }
+        
+        public GameMoveResult CommitUndo()
+        {
             var result = _controller.Undo();
 
-            if (!result.Success) return result;
-            MovePerformed?.Invoke(result);
+            if (!result.Success)
+                return result;
+
             StateChanged?.Invoke();
 
             return result;
         }
+        
+        public bool CanUndo => _controller.CanUndo();
+
+        public MoveRecord PeekUndoRecord()
+        {
+            return _controller.PeekUndoRecord();
+        }
+        
     }
 }

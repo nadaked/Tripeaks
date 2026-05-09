@@ -52,6 +52,7 @@ namespace _Project.Scripts.Presentation.Views.Deck
             {
                 var card = Instantiate(cardPrefab, stackRoot);
                 card.ShowBack();
+                card.SetSortingOrder(20 + i);
                 card.Clicked += OnDeckClicked;
                 _cards.Add(card);
             }
@@ -68,6 +69,7 @@ namespace _Project.Scripts.Presentation.Views.Deck
             {
                 var active = i < visibleCount;
                 _cards[i].gameObject.SetActive(active);
+                _cards[i].SetSortingOrder(20 + i);
 
                 if (!active)
                     continue;

@@ -130,7 +130,6 @@ namespace _Project.Scripts.Core.Game
             if (record.DrawnFromDeck.HasValue)
                 _state.Deck.AddToTop(record.DrawnFromDeck.Value);
             
-            UnityEngine.Debug.Log($"AddedToDeck Count: {record.AddedToDeck.Count}");
             if (record.AddedToDeck.Count > 0)
                 _state.Deck.RemoveFromBottom(record.AddedToDeck.Count);
             
@@ -160,6 +159,16 @@ namespace _Project.Scripts.Core.Game
             }
 
             _state.SetStatus(GameStatus.Playing);
+        }
+        
+        public bool CanUndo()
+        {
+            return _undo.CanUndo();
+        }
+
+        public MoveRecord PeekUndoRecord()
+        {
+            return _undo.Peek();
         }
     }
 }

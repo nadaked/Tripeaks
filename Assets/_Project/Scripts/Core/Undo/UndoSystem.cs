@@ -20,5 +20,10 @@ namespace _Project.Scripts.Core.Undo
         {
             return _stack.Pop();
         }
+        
+        public MoveRecord Peek()
+        {
+            return _stack.Peek();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace _Project.Scripts.Presentation.Views.Undo
     {
         [SerializeField] private GameBootstrapper bootstrapper;
         [SerializeField] private Button button;
+        
 
         private GamePresenter _presenter;
 
@@ -30,8 +31,10 @@ namespace _Project.Scripts.Presentation.Views.Undo
 
         private void OnClicked()
         {
-            var result = _presenter.Undo();
+            if (!_presenter.CanUndo)
+                return;
 
+            var result = _presenter.Undo();
             Debug.Log(result.Success ? "Undo success" : "Cannot undo");
         }
     }

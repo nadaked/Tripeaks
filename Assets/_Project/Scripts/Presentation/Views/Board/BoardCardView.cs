@@ -37,7 +37,7 @@ namespace _Project.Scripts.Presentation.Views.Board
                 cardView.ShowCard(card, selectable);
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (cardView != null)
                 cardView.Clicked -= OnCardClicked;
@@ -46,6 +46,11 @@ namespace _Project.Scripts.Presentation.Views.Board
         private void OnCardClicked()
         {
             _presenter.PlayBoardSlot(SlotIndex);
+        }
+
+        public void ShowBack()
+        {
+            cardView.ShowBack();
         }
     }
 }

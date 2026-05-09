@@ -64,5 +64,14 @@ namespace _Project.Scripts.Presentation.Views.Board
             
             return cards[slotIndex] == null ? transform.position : cards[slotIndex].transform.position;
         }
+        
+        public void ShowBackAt(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= cards.Length) return;
+            if (!cards[slotIndex]) return;
+
+            cards[slotIndex].gameObject.SetActive(true);
+            cards[slotIndex].ShowBack();
+        }
     }
 }

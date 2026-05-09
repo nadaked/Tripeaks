@@ -74,5 +74,11 @@ namespace _Project.Scripts.Presentation.Views.Card
             Debug.Log("OnPointerDown after if");
             Clicked?.Invoke();
         }
+        
+        public void SetSortingOrder(int order)
+        {
+            if (spriteRenderer != null)
+                spriteRenderer.sortingOrder = order;
+        }
     }
 }
