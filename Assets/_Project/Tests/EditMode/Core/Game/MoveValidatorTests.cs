@@ -67,6 +67,15 @@ namespace _Project.Tests.EditMode.Core.Game
 
             Assert.IsTrue(_validator.CanPlay(board, waste));
         }
+
+        [Test]
+        public void CanPlay_WhenWasteCardIsWild_ReturnsTrue()
+        {
+            var board = CardData.Normal(CardRank.Five, CardSuit.Hearts);
+            var waste = CardData.Wild();
+
+            Assert.IsTrue(_validator.CanPlay(board, waste));
+        }
         
         [Test]
         public void CanPlay_WhenDualRankMatchesAnyAdjacentRank_ReturnsTrue()

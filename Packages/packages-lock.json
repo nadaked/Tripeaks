@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.nadaked.game-services": {
+      "version": "https://github.com/nadaked/GameServices.git?path=Packages/com.nadaked.game-services",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "08a933471494f03f66977c446c3bfc81c32ee54b"
+    },
     "com.unity.2d.animation": {
       "version": "13.0.5",
       "depth": 1,

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Presentation.Views.Deck
 
         private GamePresenter _presenter;
 
-        private bool _suppressSync;
+        private int _suppressSyncCount;
         private bool _hasDisplayedCard;
         private CardData _displayedCard;
 
@@ -38,13 +38,20 @@ namespace _Project.Scripts.Presentation.Views.Deck
 
         public void SuppressSync()
         {
-            _suppressSync = true;
+            _suppressSyncCount++;
         }
 
         public void ReleaseAndSync()
         {
-            _suppressSync = false;
-            Sync();
+            _suppressSyncCount = Mathf.Max(0, _suppressSyncCount - 1);
+
+            if (_suppressSyncCount == 0)
+                Sync();
+        }
+
+        public void ReleaseWithoutSync()
+        {
+            _suppressSyncCount = Mathf.Max(0, _suppressSyncCount - 1);
         }
 
         private void ApplyCard(CardData card)
@@ -66,7 +73,7 @@ namespace _Project.Scripts.Presentation.Views.Deck
 
         private void Sync()
         {
-            if (_suppressSync)
+            if (_suppressSyncCount > 0)
                 return;
 
             var state = _presenter.State;
@@ -87,8 +94,14 @@ namespace _Project.Scripts.Presentation.Views.Deck
         
         public void ShowCard(CardData card, bool instant = true)
         {
+            _displayedCard = card;
+            _hasDisplayedCard = true;
+
+            gameObject.SetActive(true);
             cardView.gameObject.SetActive(true);
+            cardView.SetSortingOrder(30);
             cardView.ShowCard(card, instant);
+            cardView.SetClickEnabled(false);
         }
 
         public void HideCard()

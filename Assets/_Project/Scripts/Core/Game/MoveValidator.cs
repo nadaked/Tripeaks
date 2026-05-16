@@ -9,7 +9,7 @@ namespace _Project.Scripts.Core.Game
             if (!waste.IsValid)
                 return true;
 
-            if (fromBoard.IsWild)
+            if (fromBoard.IsWild || waste.IsWild)
                 return true;
             
             if (fromBoard.IsDualRank)

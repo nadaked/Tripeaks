@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cfb5e5b098809499278355d4346bff, type: 3}
+  m_Name: UnityAudioServiceFactory
+  m_EditorClassIdentifier: GameServices.Runtime::GameServices.GameServices.Runtime.Audio.UnityAudioServiceFactory
+  enabledService: 1
+  musicClips: []
+  sfxClips: []
+  masterVolume: 1
+  musicVolume: 1
+  sfxVolume: 1
+  loopMusic: 1
+  persistAcrossScenes: 1
+  logWarnings: 1
+  masterOutput: {fileID: 24300002, guid: f61b3b3a5705fc046b0dd4dd11f21a5c, type: 2}
+  musicOutput: {fileID: -6254892421641850571, guid: f61b3b3a5705fc046b0dd4dd11f21a5c, type: 2}
+  sfxOutput: {fileID: -3531248776448649988, guid: f61b3b3a5705fc046b0dd4dd11f21a5c, type: 2}

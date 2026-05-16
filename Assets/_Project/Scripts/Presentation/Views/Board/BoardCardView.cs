@@ -8,6 +8,7 @@ namespace _Project.Scripts.Presentation.Views.Board
     public sealed class BoardCardView : MonoBehaviour
     {
         [SerializeField] private CardView cardView;
+        [SerializeField] private bool useDirectPointerInput;
         private GamePresenter _presenter;
 
         public int SlotIndex { get; private set; }
@@ -19,8 +20,11 @@ namespace _Project.Scripts.Presentation.Views.Board
 
             if (cardView == null)
                 cardView = GetComponentInChildren<CardView>();
-            
-            cardView.Clicked += OnCardClicked;
+
+            if (useDirectPointerInput)
+                cardView.Clicked += OnCardClicked;
+            else
+                cardView.SetClickEnabled(false);
 
         }
 
@@ -39,7 +43,7 @@ namespace _Project.Scripts.Presentation.Views.Board
 
         private void OnDestroy()
         {
-            if (cardView != null)
+            if (cardView != null && useDirectPointerInput)
                 cardView.Clicked -= OnCardClicked;
         }
 
@@ -50,7 +54,38 @@ namespace _Project.Scripts.Presentation.Views.Board
 
         public void ShowBack()
         {
+            gameObject.SetActive(true);
             cardView.ShowBack();
+        }
+
+        public void ShowCard(CardData card, bool faceUp)
+        {
+            gameObject.SetActive(true);
+            cardView.ShowCard(card, faceUp);
+        }
+
+        public void SetSortingOrder(int order)
+        {
+            if (cardView == null)
+                cardView = GetComponentInChildren<CardView>();
+
+            cardView.SetSortingOrder(order);
+        }
+
+        public void SetClickEnabled(bool clickEnabled)
+        {
+            if (cardView == null)
+                cardView = GetComponentInChildren<CardView>();
+
+            cardView.SetClickEnabled(useDirectPointerInput && clickEnabled);
+        }
+
+        public int GetSortingOrder()
+        {
+            if (cardView == null)
+                cardView = GetComponentInChildren<CardView>();
+
+            return cardView == null ? 0 : cardView.GetSortingOrder();
         }
     }
 }

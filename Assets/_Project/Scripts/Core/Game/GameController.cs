@@ -55,6 +55,8 @@ namespace _Project.Scripts.Core.Game
                 HadWaste = _state.Waste.HasCard
             };
 
+            var selectableBeforeMove = CaptureSelectableSlots();
+
             // remove from board
             _state.Board.RemoveSlot(slotIndex);
             record.RemovedSlots.Add(slotIndex);
@@ -64,6 +66,7 @@ namespace _Project.Scripts.Core.Game
             record.NewWaste = slot.Card;
 
             ResolveUnlockSlots(record);
+            RecordRevealedSlots(record, selectableBeforeMove);
             
             _undo.Push(record);
             
@@ -95,24 +98,57 @@ namespace _Project.Scripts.Core.Game
 
         private void ResolveUnlockSlots(MoveRecord record)
         {
+            var resolvedAny = true;
+
+            while (resolvedAny)
+            {
+                resolvedAny = false;
+
+                for (var i = 0; i < _state.Board.SlotCount; i++)
+                {
+                    if (!_state.Board.IsSelectable(i)) continue;
+
+                    var slot = _state.Board.GetSlot(i);
+                    var state = _state.Board.GetState(i);
+
+                    if (state.IsUnlockResolved) continue;
+
+                    if (slot.UnlockAction.Type == GameActionType.None) continue;
+
+                    _resolver.Resolve(_state, slot.UnlockAction, record);
+
+                    state.MarkUnlockResolved();
+                    record.UnlockResolvedSlots.Add(i);
+                    
+                    _state.Board.RemoveSlot(i);
+                    record.RemovedSlots.Add(i);
+
+                    resolvedAny = true;
+                }
+            }
+        }
+
+        private bool[] CaptureSelectableSlots()
+        {
+            var selectable = new bool[_state.Board.SlotCount];
+
+            for (var i = 0; i < selectable.Length; i++)
+                selectable[i] = _state.Board.IsSelectable(i);
+
+            return selectable;
+        }
+
+        private void RecordRevealedSlots(MoveRecord record, bool[] selectableBeforeMove)
+        {
             for (var i = 0; i < _state.Board.SlotCount; i++)
             {
+                if (_state.Board.IsRemoved(i)) continue;
+
                 if (!_state.Board.IsSelectable(i)) continue;
 
-                var slot = _state.Board.GetSlot(i);
-                var state = _state.Board.GetState(i);
+                if (selectableBeforeMove[i]) continue;
 
-                if (state.IsUnlockResolved) continue;
-
-                if (slot.UnlockAction.Type == GameActionType.None) continue;
-
-                _resolver.Resolve(_state, slot.UnlockAction, record);
-
-                state.MarkUnlockResolved();
-                record.UnlockResolvedSlots.Add(i);
-                
-                _state.Board.RemoveSlot(i);
-                record.RemovedSlots.Add(i);
+                record.RevealedSlots.Add(i);
             }
         }
 
@@ -130,7 +166,9 @@ namespace _Project.Scripts.Core.Game
             if (record.DrawnFromDeck.HasValue)
                 _state.Deck.AddToTop(record.DrawnFromDeck.Value);
             
-            if (record.AddedToDeck.Count > 0)
+            if (record.AddedToDeckPositions.Count > 0)
+                _state.Deck.RemoveAtPositions(record.AddedToDeckPositions);
+            else if (record.AddedToDeck.Count > 0)
                 _state.Deck.RemoveFromBottom(record.AddedToDeck.Count);
             
             foreach (var slotIndex in record.RemovedSlots)

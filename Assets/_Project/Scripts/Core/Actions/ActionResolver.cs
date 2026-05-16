@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Core.Cards;
 using _Project.Scripts.Core.Game;
 using _Project.Scripts.Core.Undo;
@@ -9,6 +10,7 @@ namespace _Project.Scripts.Core.Actions
     public sealed class ActionResolver
     {
         private readonly ICardProvider _cardProvider;
+        private readonly Random _deckInsertRandom = new();
 
         public ActionResolver(ICardProvider cardProvider)
         {
@@ -50,7 +52,7 @@ namespace _Project.Scripts.Core.Actions
             state.Deck.AddToBottom(cards);
         }
 
-        private static void AddWildToDeck(GameState state, int amount, MoveRecord record)
+        private void AddWildToDeck(GameState state, int amount, MoveRecord record)
         {
             if (amount <= 0)
                 return;
@@ -64,7 +66,15 @@ namespace _Project.Scripts.Core.Actions
                 record.AddedToDeck.Add(card);
             }
 
-            state.Deck.AddToBottom(cards);
+            var finalCount = state.Deck.Count + cards.Count;
+            var positions = new HashSet<int>();
+
+            while (positions.Count < cards.Count)
+                positions.Add(_deckInsertRandom.Next(0, finalCount));
+
+            var orderedPositions = positions.OrderBy(position => position).ToArray();
+            record.AddedToDeckPositions.AddRange(orderedPositions);
+            state.Deck.AddAtPositions(cards, orderedPositions);
         }
     }
 }

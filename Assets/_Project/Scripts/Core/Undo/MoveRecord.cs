@@ -16,7 +16,11 @@ namespace _Project.Scripts.Core.Undo
 
         public readonly List<int> UnlockResolvedSlots = new();
 
+        public readonly List<int> RevealedSlots = new();
+
         public readonly List<CardData> AddedToDeck = new();
+
+        public readonly List<int> AddedToDeckPositions = new();
 
         public CardData? DrawnFromDeck;
     }

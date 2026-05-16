@@ -12,7 +12,10 @@ namespace _Project.Scripts.Application.Presenters
         public GameState State => _state;
         
         public event Action<GameMoveResult> MovePerformed;
+        public event Action<int> InvalidBoardCardSelected;
         public event Action StateChanged;
+
+        public bool IsInputLocked { get; private set; }
 
         public GamePresenter(GameState state, GameController controller)
         {
@@ -33,37 +36,50 @@ namespace _Project.Scripts.Application.Presenters
 
         public GameMoveResult PlayBoardSlot(int slotIndex)
         {
+            if (IsInputLocked)
+                return GameMoveResult.Failed(GameMoveType.PlayFromBoard);
+
             var result = _controller.TryPlayFromBoard(slotIndex);
 
-            if (!result.Success) return result;
+            if (!result.Success)
+            {
+                if (IsSelectableBoardSlot(slotIndex))
+                    InvalidBoardCardSelected?.Invoke(slotIndex);
+
+                return result;
+            }
+
             MovePerformed?.Invoke(result);
-            StateChanged?.Invoke();
 
             return result;
         }
 
         public GameMoveResult DrawFromDeck()
         {
+            if (IsInputLocked)
+                return GameMoveResult.Failed(GameMoveType.DrawFromDeck);
+
             var result = _controller.TryDrawFromDeck();
 
             if (!result.Success) return result;
             MovePerformed?.Invoke(result);
-            StateChanged?.Invoke();
 
             return result;
         }
 
         public GameMoveResult Undo()
         {
-            if (!_controller.CanUndo())
+            if (IsInputLocked)
                 return GameMoveResult.Failed(GameMoveType.Undo);
 
-            var record = _controller.PeekUndoRecord();
-            var visualResult = GameMoveResult.Succeeded(GameMoveType.Undo, record);
+            var result = _controller.Undo();
 
-            MovePerformed?.Invoke(visualResult);
+            if (!result.Success)
+                return result;
 
-            return visualResult;
+            MovePerformed?.Invoke(result);
+
+            return result;
         }
         
         public GameMoveResult CommitUndo()
@@ -83,6 +99,23 @@ namespace _Project.Scripts.Application.Presenters
         public MoveRecord PeekUndoRecord()
         {
             return _controller.PeekUndoRecord();
+        }
+
+        public void SetInputLocked(bool locked)
+        {
+            IsInputLocked = locked;
+        }
+
+        public void PublishStateChanged()
+        {
+            StateChanged?.Invoke();
+        }
+
+        private bool IsSelectableBoardSlot(int slotIndex)
+        {
+            return slotIndex >= 0 &&
+                   slotIndex < _state.Board.SlotCount &&
+                   _state.Board.IsSelectable(slotIndex);
         }
         
     }

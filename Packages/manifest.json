@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.nadaked.game-services": "https://github.com/nadaked/GameServices.git?path=Packages/com.nadaked.game-services",
     "com.unity.ai.navigation": "2.0.11",
     "com.unity.collab-proxy": "2.11.4",
     "com.unity.feature.2d": "2.0.2",

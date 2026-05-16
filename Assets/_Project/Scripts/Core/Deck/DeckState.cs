@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Core.Cards;
 
 namespace _Project.Scripts.Core.Deck
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Core.Deck
 
         public void AddToBottom(IEnumerable<CardData> cards)
         {
-            var current = _cards.ToArray(); 
+            var current = _cards.ToArray();
 
             _cards.Clear();
 
@@ -42,6 +43,33 @@ namespace _Project.Scripts.Core.Deck
         public void AddToTop(CardData card)
         {
             _cards.Push(card);
+        }
+
+        public void AddAtPositions(IReadOnlyList<CardData> cards, IReadOnlyList<int> positionsFromTop)
+        {
+            if (cards == null || positionsFromTop == null || cards.Count == 0)
+                return;
+
+            var current = _cards.ToArray().ToList();
+            var finalCount = current.Count + cards.Count;
+            var cardCursor = 0;
+            var currentCursor = 0;
+            var positionSet = new HashSet<int>(positionsFromTop);
+            var merged = new List<CardData>(finalCount);
+
+            for (var i = 0; i < finalCount; i++)
+            {
+                if (positionSet.Contains(i) && cardCursor < cards.Count)
+                {
+                    merged.Add(cards[cardCursor++]);
+                    continue;
+                }
+
+                if (currentCursor < current.Count)
+                    merged.Add(current[currentCursor++]);
+            }
+
+            SetFromTopToBottom(merged);
         }
         
         public void RemoveFromBottom(int count)
@@ -62,6 +90,31 @@ namespace _Project.Scripts.Core.Deck
             _cards.Clear();
             
             for (var i = keepCount - 1; i >= 0; i--)
+                _cards.Push(cards[i]);
+        }
+
+        public void RemoveAtPositions(IReadOnlyList<int> positionsFromTop)
+        {
+            if (positionsFromTop == null || positionsFromTop.Count == 0)
+                return;
+
+            var cards = _cards.ToArray().ToList();
+            var positions = positionsFromTop
+                .Where(position => position >= 0 && position < cards.Count)
+                .Distinct()
+                .OrderByDescending(position => position);
+
+            foreach (var position in positions)
+                cards.RemoveAt(position);
+
+            SetFromTopToBottom(cards);
+        }
+
+        private void SetFromTopToBottom(IReadOnlyList<CardData> cards)
+        {
+            _cards.Clear();
+
+            for (var i = cards.Count - 1; i >= 0; i--)
                 _cards.Push(cards[i]);
         }
     }

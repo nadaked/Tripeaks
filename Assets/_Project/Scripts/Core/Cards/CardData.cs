@@ -48,5 +48,17 @@
         {
             return new CardData(CardRank.None, CardSuit.None, CardType.AddDeckCards, amount);
         }
+
+        public override string ToString()
+        {
+            return Type switch
+            {
+                CardType.Normal => $"{Rank} of {Suit}",
+                CardType.DualRank => $"{Rank}/{SecondRank} of {Suit}",
+                CardType.Wild => "Wild",
+                CardType.AddDeckCards => $"+{Value} Deck",
+                _ => "Invalid"
+            };
+        }
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09fafe843f1fa74ca871e4bac748fa6, type: 3}
+  m_Name: GameServicesConfig
+  m_EditorClassIdentifier: GameServices.Runtime::GameServices.GameServices.Runtime.Core.GameServicesConfig
+  factories:
+  - {fileID: 11400000, guid: bfe1fcf41311a04418e41bfbcaf2890a, type: 2}
+  - {fileID: 11400000, guid: 4310d1b6fca747d699b2165d6f337389, type: 2}
+  - {fileID: 11400000, guid: 7759f4f1bb86b4b4c928746a97bdba88, type: 2}
+  - {fileID: 11400000, guid: 9d7087f2b9e34e64a92c7aa2db0f6b4d, type: 2}
+  useMockServicesInEditor: 0
+  verboseLogging: 1

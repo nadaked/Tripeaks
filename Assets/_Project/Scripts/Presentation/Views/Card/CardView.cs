@@ -67,18 +67,30 @@ namespace _Project.Scripts.Presentation.Views.Card
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log("OnPointerDown");
             if (!_clickEnabled)
                 return;
 
-            Debug.Log("OnPointerDown after if");
             Clicked?.Invoke();
         }
         
         public void SetSortingOrder(int order)
         {
+            if (spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+
             if (spriteRenderer != null)
                 spriteRenderer.sortingOrder = order;
+
+            if (specialText != null && specialText.TryGetComponent<Renderer>(out var textRenderer))
+                textRenderer.sortingOrder = order + 1;
+        }
+
+        public int GetSortingOrder()
+        {
+            if (spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+
+            return spriteRenderer == null ? 0 : spriteRenderer.sortingOrder;
         }
     }
 }
