@@ -96,6 +96,25 @@ namespace _Project.Scripts.Core.Game
             return GameMoveResult.Succeeded(GameMoveType.DrawFromDeck, record);
         }
 
+        public GameMoveResult TryUseWildButton()
+        {
+            var wild = CardData.Wild();
+            var record = new MoveRecord
+            {
+                PreviousWaste = _state.Waste.HasCard ? _state.Waste.Current : default,
+                HadWaste = _state.Waste.HasCard,
+                DrawnFromDeck = wild,
+                NewWaste = wild
+            };
+
+            _state.Waste.Set(wild);
+            _undo.Push(record);
+
+            EvaluateGameStatus();
+
+            return GameMoveResult.Succeeded(GameMoveType.UseWildButton, record);
+        }
+
         private void ResolveUnlockSlots(MoveRecord record)
         {
             var resolvedAny = true;

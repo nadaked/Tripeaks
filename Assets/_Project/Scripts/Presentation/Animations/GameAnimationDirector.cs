@@ -8,6 +8,7 @@ using _Project.Scripts.Core.Undo;
 using _Project.Scripts.Presentation.Views.Board;
 using _Project.Scripts.Presentation.Views.Card;
 using _Project.Scripts.Presentation.Views.Deck;
+using _Project.Scripts.Presentation.Views.Powerups;
 using DG.Tweening;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace _Project.Scripts.Presentation.Animations
         [SerializeField] private BoardView boardView;
         [SerializeField] private WasteView wasteView;
         [SerializeField] private DeckView deckView;
+        [SerializeField] private WildButtonView wildButtonView;
         [SerializeField] private CardView ghostCardPrefab;
         [SerializeField] private Transform ghostRoot;
 
@@ -78,6 +80,9 @@ namespace _Project.Scripts.Presentation.Animations
         private int _wasteFlyingVersion;
         private bool _initialWasteDealPlayed;
         private readonly MoveValidator _moveValidator = new();
+        private const int WasteFlyingGhostSortingOrder = 1000;
+        private const int UndoFlyingGhostSortingOrder = 1100;
+        private const int RewardFlyingGhostSortingOrder = 900;
 
         private void Awake()
         {
@@ -104,6 +109,10 @@ namespace _Project.Scripts.Presentation.Animations
         private void Start()
         {
             _presenter = bootstrapper.Presenter;
+
+            if (wildButtonView == null)
+                wildButtonView = FindFirstObjectByType<WildButtonView>();
+
             _presenter.MovePerformed += OnMovePerformed;
             _presenter.InvalidBoardCardSelected += OnInvalidBoardCardSelected;
 
@@ -465,6 +474,10 @@ namespace _Project.Scripts.Presentation.Animations
                     PlayDeckToWaste(result);
                     break;
 
+                case GameMoveType.UseWildButton:
+                    PlayWildButtonToWaste(result);
+                    break;
+
                 case GameMoveType.StartGame:
                     PlayDeckToWaste(result);
                     break;
@@ -514,7 +527,9 @@ namespace _Project.Scripts.Presentation.Animations
             var record = result.Record;
             var seq = DOTween.Sequence();
 
+            CancelActiveWasteFlying();
             wasteView.SuppressSync();
+
 
             // Deck draw undo ise:
             // Ghost waste'ten deck'e giderken waste altında eski kart görünmeli.
@@ -652,8 +667,9 @@ namespace _Project.Scripts.Presentation.Animations
                     ghost.transform.position = from;
                     ghost.transform.rotation = Quaternion.identity;
                     ghost.transform.localScale = Vector3.one;
-                    ghost.SetSortingOrder(130 + i);
-                    ghost.ShowBack();
+                    ghost.SetSortingOrder(RewardFlyingGhostSortingOrder + i);
+                    var card = record.AddedToDeck[cardIndex];
+                    ShowDeckFacingCard(ghost, card);
 
                     var delay = i * rewardSpawnInterval;
 
@@ -690,7 +706,7 @@ namespace _Project.Scripts.Presentation.Animations
             ghost.transform.rotation = Quaternion.identity;
             ghost.transform.localScale = Vector3.one;
             ghost.ShowCard(record.NewWaste, true);
-            ghost.SetSortingOrder(200);
+            ghost.SetSortingOrder(UndoFlyingGhostSortingOrder);
 
             seq.Append(PlayGhostArcMove(ghost.transform, from, to, flyDuration, -rotateDegrees, true, targetRotation));
 
@@ -714,26 +730,29 @@ namespace _Project.Scripts.Presentation.Animations
             ghost.transform.rotation = Quaternion.identity;
             ghost.transform.localScale = Vector3.one;
             ghost.ShowCard(record.DrawnFromDeck.Value, true);
-            ghost.SetSortingOrder(200);
+            ghost.SetSortingOrder(UndoFlyingGhostSortingOrder);
 
             seq.Append(PlayGhostArcMove(ghost.transform, from, to, deckToWasteDuration, -rotateDegrees, false));
 
-            seq.Append(
-                ghost.transform
-                    .DOScaleX(0f, flipDuration * 0.5f)
-                    .SetEase(Ease.InQuad)
-            );
-
-            seq.AppendCallback(() =>
+            if (!record.DrawnFromDeck.Value.IsWild)
             {
-                ghost.ShowBack();
-            });
+                seq.Append(
+                    ghost.transform
+                        .DOScaleX(0f, flipDuration * 0.5f)
+                        .SetEase(Ease.InQuad)
+                );
 
-            seq.Append(
-                ghost.transform
-                    .DOScaleX(1f, flipDuration * 0.5f)
-                    .SetEase(Ease.OutQuad)
-            );
+                seq.AppendCallback(() =>
+                {
+                    ghost.ShowBack();
+                });
+
+                seq.Append(
+                    ghost.transform
+                        .DOScaleX(1f, flipDuration * 0.5f)
+                        .SetEase(Ease.OutQuad)
+                );
+            }
 
             seq.OnComplete(() =>
             {
@@ -763,8 +782,8 @@ namespace _Project.Scripts.Presentation.Animations
             ghost.transform.position = from;
             ghost.transform.rotation = Quaternion.identity;
             ghost.transform.localScale = Vector3.one;
-            ghost.ShowBack();
-            ghost.SetSortingOrder(100);
+            ShowDeckFacingCard(ghost, card);
+            ghost.SetSortingOrder(WasteFlyingGhostSortingOrder);
 
             wasteView.SuppressSync();
 
@@ -776,10 +795,44 @@ namespace _Project.Scripts.Presentation.Animations
                     .SetEase(Ease.OutCubic)
             );
 
-            seq.Join(FlipToCard(ghost, card));
+            if (!card.IsWild)
+                seq.Join(FlipToCard(ghost, card));
 
             seq.Append(PlayGhostLandBounce(ghost.transform, to, Vector3.one));
 
+            seq.OnComplete(() =>
+            {
+                CompleteWasteFlying(version, ghost, card);
+                CompleteMove();
+            });
+        }
+
+        private void PlayWildButtonToWaste(GameMoveResult result)
+        {
+            var record = result.Record;
+
+            if (!record.DrawnFromDeck.HasValue)
+            {
+                CompleteMove();
+                return;
+            }
+
+            var card = record.DrawnFromDeck.Value;
+            var from = wildButtonView != null ? wildButtonView.FlySource.position : deckView.GetWorldPosition();
+            var to = wasteView.GetWorldPosition();
+
+            var version = BeginWasteFlying(card);
+            var ghost = CreateWasteFlyingGhost(card);
+            ghost.transform.position = from;
+            ghost.transform.rotation = Quaternion.identity;
+            ghost.transform.localScale = Vector3.one;
+            ghost.ShowCard(card, true);
+            ghost.SetSortingOrder(WasteFlyingGhostSortingOrder);
+
+            wasteView.SuppressSync();
+
+            var seq = DOTween.Sequence();
+            seq.Append(PlayGhostArcMove(ghost.transform, from, to, deckToWasteDuration, rotateDegrees, true));
             seq.OnComplete(() =>
             {
                 CompleteWasteFlying(version, ghost, card);
@@ -879,8 +932,8 @@ namespace _Project.Scripts.Presentation.Animations
             ghost.transform.position = from;
             ghost.transform.rotation = Quaternion.identity;
             ghost.transform.localScale = Vector3.one;
-            ghost.ShowBack();
-            ghost.SetSortingOrder(120);
+            ShowDeckFacingCard(ghost, card);
+            ghost.SetSortingOrder(WasteFlyingGhostSortingOrder);
 
             var seq = DOTween.Sequence();
 
@@ -890,7 +943,8 @@ namespace _Project.Scripts.Presentation.Animations
                     .SetEase(Ease.OutCubic)
             );
 
-            seq.Join(FlipToCard(ghost, card));
+            if (!card.IsWild)
+                seq.Join(FlipToCard(ghost, card));
 
             seq.Append(PlayGhostLandBounce(ghost.transform, to, Vector3.one));
 
@@ -948,7 +1002,7 @@ namespace _Project.Scripts.Presentation.Animations
             ghost.transform.position = from;
             ghost.transform.rotation = Quaternion.identity;
             ghost.transform.localScale = Vector3.one;
-            ghost.SetSortingOrder(100);
+            ghost.SetSortingOrder(RewardFlyingGhostSortingOrder);
 
             if (card.IsWild)
                 ghost.ShowCard(card, true);
@@ -1083,7 +1137,7 @@ namespace _Project.Scripts.Presentation.Animations
             ghost.transform.rotation = Quaternion.identity;
             ghost.transform.localScale = Vector3.one;
             ghost.ShowCard(record.NewWaste, true);
-            ghost.SetSortingOrder(100);
+            ghost.SetSortingOrder(WasteFlyingGhostSortingOrder);
 
             boardView.HideAt(record.PlayedSlotIndex);
             wasteView.SuppressSync();
@@ -1118,6 +1172,18 @@ namespace _Project.Scripts.Presentation.Animations
             return ghost;
         }
 
+        private void CancelActiveWasteFlying()
+        {
+            if (_activeWasteFlyingGhost == null)
+                return;
+
+            _wasteFlyingVersion++;
+            wasteView.ReleaseWithoutSync();
+
+            Destroy(_activeWasteFlyingGhost.gameObject);
+            _activeWasteFlyingGhost = null;
+        }
+
         private void CompleteWasteFlying(int version, CardView ghost, CardData card)
         {
             if (version != _wasteFlyingVersion)
@@ -1148,6 +1214,12 @@ namespace _Project.Scripts.Presentation.Animations
         {
             var seq = DOTween.Sequence();
 
+            if (card.IsWild)
+            {
+                cardView.ShowCard(card, true);
+                return seq;
+            }
+
             seq.Append(
                 cardView.transform
                     .DOScaleX(0f, flipDuration * 0.5f)
@@ -1166,6 +1238,14 @@ namespace _Project.Scripts.Presentation.Animations
             );
 
             return seq;
+        }
+
+        private static void ShowDeckFacingCard(CardView cardView, CardData card)
+        {
+            if (card.IsWild)
+                cardView.ShowCard(card, true);
+            else
+                cardView.ShowBack();
         }
 
         private Tween PlayGhostArcMove(

@@ -67,6 +67,19 @@ namespace _Project.Scripts.Application.Presenters
             return result;
         }
 
+        public GameMoveResult UseWildButton()
+        {
+            if (IsInputLocked)
+                return GameMoveResult.Failed(GameMoveType.UseWildButton);
+
+            var result = _controller.TryUseWildButton();
+
+            if (!result.Success) return result;
+            MovePerformed?.Invoke(result);
+
+            return result;
+        }
+
         public GameMoveResult Undo()
         {
             if (IsInputLocked)

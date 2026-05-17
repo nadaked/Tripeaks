@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.Application.Presenters;
 using _Project.Scripts.Application.Runtime;
@@ -19,9 +20,21 @@ namespace _Project.Scripts.Presentation.Audio
         [SerializeField] private string deckDrawSfxId = "deck_draw";
         [SerializeField] private string revealSfxId = "card_reveal";
         [SerializeField] private string rewardSfxId = "reward_card";
+        [SerializeField] private string wildSfxId = "wild";
         [SerializeField] private string undoSfxId = "undo";
         [SerializeField] private string invalidMoveSfxId = "invalid_move";
         [SerializeField] private bool playGameServicesSfx = true;
+
+        [Header("Background Music")]
+        [SerializeField] private bool playBackgroundMusic = true;
+        [SerializeField] private MusicTrack[] backgroundMusicTracks =
+        {
+            new("clouds_over_tripeaks_1"),
+            new("clouds_over_tripeaks_2")
+        };
+        [SerializeField] private bool loopBackgroundPlaylist = true;
+        [SerializeField, Min(0f)] private float musicTrackGap = 0.15f;
+        [SerializeField, Min(1f)] private float fallbackTrackDuration = 120f;
 
         [Header("Combo Melody")]
         [SerializeField] private string[] comboSfxIds =
@@ -43,7 +56,21 @@ namespace _Project.Scripts.Presentation.Audio
 
         private GamePresenter _presenter;
         private IAudioService _audioService;
+        private Coroutine _musicRoutine;
         private int _comboStep;
+
+        [Serializable]
+        private struct MusicTrack
+        {
+            public string Id;
+            public AudioClip Clip;
+
+            public MusicTrack(string id)
+            {
+                Id = id;
+                Clip = null;
+            }
+        }
 
         private void Start()
         {
@@ -70,6 +97,15 @@ namespace _Project.Scripts.Presentation.Audio
 
         private void OnDestroy()
         {
+            if (_musicRoutine != null)
+            {
+                StopCoroutine(_musicRoutine);
+                _musicRoutine = null;
+            }
+
+            if (_audioService != null && playBackgroundMusic)
+                _audioService.StopMusicAsync();
+
             if (_presenter != null)
             {
                 _presenter.MovePerformed -= OnMovePerformed;
@@ -86,6 +122,9 @@ namespace _Project.Scripts.Presentation.Audio
                 yield return null;
 
             servicesProvider.TryGet(out _audioService);
+
+            if (_audioService != null && playBackgroundMusic)
+                _musicRoutine = StartCoroutine(PlayBackgroundMusicPlaylist());
         }
 
         private void OnMovePerformed(GameMoveResult result)
@@ -112,6 +151,10 @@ namespace _Project.Scripts.Presentation.Audio
                         ResetCombo();
                     break;
 
+                case GameMoveType.UseWildButton:
+                    PlaySfx(wildSfxId);
+                    break;
+
                 case GameMoveType.Undo:
                     PlaySfx(undoSfxId);
                     if (resetComboOnUndo)
@@ -128,6 +171,33 @@ namespace _Project.Scripts.Presentation.Audio
         private void OnInvalidBoardCardSelected(int _)
         {
             PlaySfx(invalidMoveSfxId);
+        }
+
+        private IEnumerator PlayBackgroundMusicPlaylist()
+        {
+            if (backgroundMusicTracks == null || backgroundMusicTracks.Length == 0)
+                yield break;
+
+            var index = 0;
+
+            while (_audioService != null)
+            {
+                var track = backgroundMusicTracks[index];
+                if (!string.IsNullOrWhiteSpace(track.Id))
+                    _audioService.PlayMusicAsync(track.Id);
+
+                var duration = track.Clip != null ? track.Clip.length : fallbackTrackDuration;
+                yield return new WaitForSeconds(duration + musicTrackGap);
+
+                index++;
+                if (index < backgroundMusicTracks.Length)
+                    continue;
+
+                if (!loopBackgroundPlaylist)
+                    yield break;
+
+                index = 0;
+            }
         }
 
         private async void PlaySfx(string sfxId)

@@ -14,6 +14,7 @@ namespace _Project.Scripts.Editor.LevelTool
     public sealed class BoardDefinitionEditorWindow : EditorWindow
     {
         private const string DefaultFolder = "Assets/_Project/Data/Boards";
+        private static readonly Vector2 CardColliderSize = new(10.5f, 15f);
 
         private BoardDefinition _boardDefinition;
         private Transform _boardRoot;
@@ -29,31 +30,31 @@ namespace _Project.Scripts.Editor.LevelTool
         private bool _showFanPattern;
         private bool _showPyramidPattern;
         private bool _showTutorialArcPattern;
-        private float _duplicateOffsetX = 2f;
-        private float _mirrorDistanceX = 6f;
-        private Vector2 _daisyCardSize = new(7.29589939f, 10.2501965f);
+        private float _duplicateOffsetX = 3f;
+        private float _mirrorDistanceX = 8.5f;
+        private Vector2 _daisyCardSize = CardColliderSize;
         private int _daisyPetalCount = 8;
-        private float _daisyRadius = 4.6f;
+        private float _daisyRadius = 6.6f;
         private bool _daisyRotatePetals = true;
         private bool _daisyCreateBlockers = true;
         private int _stackCardCount = 6;
-        private float _stackStepY = 0.7f;
+        private float _stackStepY = 1.05f;
         private bool _stackCreateBlockers = true;
-        private float _fanOffsetX = 2.6f;
-        private float _fanOffsetY = -0.25f;
-        private float _fanRotation = 12f;
+        private float _fanOffsetX = 5.7f;
+        private float _fanOffsetY = -1.45f;
+        private float _fanRotation = 10f;
         private bool _fanCreateBlockers = true;
         private int _pyramidBottomCount = 4;
-        private float _pyramidStepX = 2.8f;
-        private float _pyramidStepY = 2.25f;
+        private float _pyramidStepX = 6.1f;
+        private float _pyramidStepY = 4.2f;
         private int _pyramidRows = 3;
         private bool _pyramidCreateBlockers = true;
         private int _tutorialArcCardCount = 5;
         private int _tutorialArcBottomCardCount = 5;
-        private float _tutorialArcStepX = 2.45f;
-        private float _tutorialArcRowOffsetX = 1.225f;
-        private float _tutorialArcRowGapY = 2.55f;
-        private float _tutorialArcCurveY = 0.24f;
+        private float _tutorialArcStepX = 3.6f;
+        private float _tutorialArcRowOffsetX = 1.8f;
+        private float _tutorialArcRowGapY = 3.75f;
+        private float _tutorialArcCurveY = 0.35f;
         private float _tutorialArcMaxRotation = 12f;
         private bool _tutorialArcCreateBlockers = true;
         private bool _tutorialArcSetOpeningDeckCard = true;
@@ -412,6 +413,7 @@ namespace _Project.Scripts.Editor.LevelTool
             instance.transform.localPosition = localPosition;
             instance.transform.localRotation = localRotation;
             instance.transform.localScale = Vector3.one;
+            EnsureCardColliderSize(instance.gameObject);
 
             if (cardData.type == CardType.Normal && !showNormalFaceUp)
                 instance.ShowBack();
@@ -429,6 +431,19 @@ namespace _Project.Scripts.Editor.LevelTool
             EditorSceneManager.MarkSceneDirty(instance.gameObject.scene);
 
             return authoring;
+        }
+
+        private static void EnsureCardColliderSize(GameObject cardObject)
+        {
+            if (cardObject == null)
+                return;
+
+            foreach (var collider in cardObject.GetComponentsInChildren<BoxCollider2D>(true))
+            {
+                Undo.RecordObject(collider, "Apply Card Collider Size");
+                collider.size = CardColliderSize;
+                EditorUtility.SetDirty(collider);
+            }
         }
 
         private void SaveBoardFromScene()
@@ -1032,6 +1047,8 @@ namespace _Project.Scripts.Editor.LevelTool
             var copy = copyObject.GetComponent<BoardCardAuthoring>();
             if (copy == null)
                 copy = Undo.AddComponent<BoardCardAuthoring>(copyObject);
+
+            EnsureCardColliderSize(copyObject);
 
             copy.Card = source.Card;
             copy.Blockers = Array.Empty<BoardCardAuthoring>();

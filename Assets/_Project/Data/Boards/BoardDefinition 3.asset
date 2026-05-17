@@ -15,7 +15,7 @@ MonoBehaviour:
   cardGenerationMode: 0
   randomSeed: 12345
   deckGenerationMode: 1
-  initialDeckCardCount: 2
+  initialDeckCardCount: 25
   useOpeningDeckCard: 1
   openingDeckCard:
     type: 0
@@ -25,134 +25,134 @@ MonoBehaviour:
     value: 0
   slots:
   - index: 0
-    localPosition: {x: -13.78, y: -0.24, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 12}
+    localPosition: {x: -42.1, y: 21.2, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 270}
     sortingOrder: 1
     card:
       type: 0
-      rank: 10
+      rank: 0
       secondRank: 0
-      suit: 3
+      suit: 0
       value: 0
-    blockedBy: 0400000005000000
+    blockedBy: 0800000001000000
     unlockAction:
       type: 0
       value: 0
   - index: 1
-    localPosition: {x: -3.78, y: -0.08, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 3.9999995}
+    localPosition: {x: -43.447308, y: 24.452692, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 315}
     sortingOrder: 2
     card:
       type: 0
-      rank: 11
+      rank: 0
       secondRank: 0
-      suit: 1
+      suit: 0
       value: 0
-    blockedBy: 0500000006000000
+    blockedBy: 0800000002000000
     unlockAction:
       type: 0
       value: 0
   - index: 2
-    localPosition: {x: 6.2200003, y: -0.08, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 356}
+    localPosition: {x: -46.699997, y: 25.800001, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 3
     card:
       type: 0
-      rank: 12
+      rank: 0
       secondRank: 0
-      suit: 2
+      suit: 0
       value: 0
-    blockedBy: 0600000007000000
+    blockedBy: 0800000003000000
     unlockAction:
       type: 0
       value: 0
   - index: 3
-    localPosition: {x: 16.22, y: -0.24, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 348}
+    localPosition: {x: -49.952686, y: 24.452692, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 45.000004}
     sortingOrder: 4
     card:
       type: 0
-      rank: 13
+      rank: 0
       secondRank: 0
-      suit: 4
+      suit: 0
       value: 0
-    blockedBy: 0700000008000000
+    blockedBy: 0800000004000000
     unlockAction:
       type: 0
       value: 0
   - index: 4
-    localPosition: {x: -20, y: 2.31, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 12}
+    localPosition: {x: -51.299995, y: 21.2, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 90}
     sortingOrder: 5
     card:
       type: 0
-      rank: 5
+      rank: 0
       secondRank: 0
-      suit: 3
+      suit: 0
       value: 0
-    blockedBy: 
+    blockedBy: 0800000005000000
     unlockAction:
       type: 0
       value: 0
   - index: 5
-    localPosition: {x: -10, y: 2.43, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 6}
+    localPosition: {x: -49.95269, y: 17.94731, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 315}
     sortingOrder: 6
     card:
       type: 0
-      rank: 6
+      rank: 0
       secondRank: 0
-      suit: 1
+      suit: 0
       value: 0
-    blockedBy: 
+    blockedBy: 0800000006000000
     unlockAction:
       type: 0
       value: 0
   - index: 6
-    localPosition: {x: 0, y: 2.55, z: 0}
+    localPosition: {x: -46.699997, y: 16.6, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 7
     card:
       type: 0
-      rank: 7
+      rank: 0
       secondRank: 0
-      suit: 2
+      suit: 0
       value: 0
-    blockedBy: 
+    blockedBy: 0800000007000000
     unlockAction:
       type: 0
       value: 0
   - index: 7
-    localPosition: {x: 10, y: 2.43, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 354}
+    localPosition: {x: -43.447308, y: 17.94731, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 45.000004}
     sortingOrder: 8
     card:
       type: 0
-      rank: 8
+      rank: 0
       secondRank: 0
-      suit: 4
+      suit: 0
       value: 0
-    blockedBy: 
+    blockedBy: 08000000
     unlockAction:
       type: 0
       value: 0
   - index: 8
-    localPosition: {x: 20, y: 2.31, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 348}
+    localPosition: {x: -46.699997, y: 21.2, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 9
     card:
       type: 0
-      rank: 9
+      rank: 0
       secondRank: 0
-      suit: 3
+      suit: 0
       value: 0
     blockedBy: 
     unlockAction:
       type: 0
       value: 0
   - index: 9
-    localPosition: {x: 37.47, y: 16.3, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 270}
+    localPosition: {x: 38.700005, y: 21.2, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 90}
     sortingOrder: 10
     card:
       type: 0
@@ -165,8 +165,8 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 10
-    localPosition: {x: 36.122692, y: 19.55269, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 315}
+    localPosition: {x: 40.047314, y: 24.452692, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 45.000004}
     sortingOrder: 11
     card:
       type: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 11
-    localPosition: {x: 32.870003, y: 20.9, z: 0}
+    localPosition: {x: 43.300003, y: 25.800001, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 12
     card:
@@ -193,8 +193,8 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 12
-    localPosition: {x: 29.61731, y: 19.55269, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 45.000004}
+    localPosition: {x: 46.552692, y: 24.452692, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 315}
     sortingOrder: 13
     card:
       type: 0
@@ -207,8 +207,8 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 13
-    localPosition: {x: 28.27, y: 16.3, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 90}
+    localPosition: {x: 47.9, y: 21.2, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 270}
     sortingOrder: 14
     card:
       type: 0
@@ -221,8 +221,8 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 14
-    localPosition: {x: 29.61731, y: 13.047309, z: 0}
-    localEulerAngles: {x: 0, y: 0, z: 315}
+    localPosition: {x: 46.552696, y: 17.94731, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 45.000004}
     sortingOrder: 15
     card:
       type: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 15
-    localPosition: {x: 32.870003, y: 11.7, z: 0}
+    localPosition: {x: 43.300003, y: 16.6, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 16
     card:
@@ -249,8 +249,8 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 16
-    localPosition: {x: 36.122692, y: 13.047308, z: 0}
-    localEulerAngles: {x: -0, y: 0, z: 45.000004}
+    localPosition: {x: 40.047314, y: 17.94731, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 315}
     sortingOrder: 17
     card:
       type: 0
@@ -263,7 +263,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 17
-    localPosition: {x: 32.870003, y: 16.3, z: 0}
+    localPosition: {x: 43.300003, y: 21.2, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 18
     card:
@@ -277,7 +277,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 18
-    localPosition: {x: -36.8, y: 7.02, z: 0}
+    localPosition: {x: -46.8, y: -3.2, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 19
     card:
@@ -291,7 +291,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 19
-    localPosition: {x: -36.799995, y: 7.72, z: 0}
+    localPosition: {x: -46.8, y: -2.4999988, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 20
     card:
@@ -305,7 +305,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 20
-    localPosition: {x: -36.799995, y: 8.42, z: 0}
+    localPosition: {x: -46.8, y: -1.8, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 21
     card:
@@ -319,7 +319,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 21
-    localPosition: {x: -36.799995, y: 9.120001, z: 0}
+    localPosition: {x: -46.8, y: -1.0999992, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 22
     card:
@@ -333,7 +333,7 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 22
-    localPosition: {x: -36.799995, y: 9.82, z: 0}
+    localPosition: {x: -46.8, y: -0.40000033, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 23
     card:
@@ -347,9 +347,219 @@ MonoBehaviour:
       type: 0
       value: 0
   - index: 23
-    localPosition: {x: -36.799995, y: 10.52, z: 0}
+    localPosition: {x: -46.8, y: 0.30000043, z: 0}
     localEulerAngles: {x: -0, y: 0, z: 0}
     sortingOrder: 24
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 24
+    localPosition: {x: 43.2, y: -3.2, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 25
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 19000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 25
+    localPosition: {x: 43.2, y: -2.4999988, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 26
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 1a000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 26
+    localPosition: {x: 43.2, y: -1.8, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 27
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 1b000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 27
+    localPosition: {x: 43.2, y: -1.0999992, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 28
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 1c000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 28
+    localPosition: {x: 43.2, y: -0.40000033, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 29
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 1d000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 29
+    localPosition: {x: 43.2, y: 0.30000043, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 30
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 30
+    localPosition: {x: -17.6, y: 9.1, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 12}
+    sortingOrder: 31
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 20000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 31
+    localPosition: {x: -3.6000013, y: 9.1, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 348}
+    sortingOrder: 32
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 20000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 32
+    localPosition: {x: -10.600001, y: 9.35, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 33
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 24000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 33
+    localPosition: {x: 23.7, y: 9.1, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 348}
+    sortingOrder: 34
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 23000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 34
+    localPosition: {x: 9.700002, y: 9.1, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 12}
+    sortingOrder: 35
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 23000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 35
+    localPosition: {x: 16.7, y: 9.35, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 36
+    card:
+      type: 0
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 25000000
+    unlockAction:
+      type: 0
+      value: 0
+  - index: 36
+    localPosition: {x: -2.4, y: 9.4, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 37
+    card:
+      type: 1
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 26000000
+    unlockAction:
+      type: 2
+      value: 1
+  - index: 37
+    localPosition: {x: 8.88, y: 9.4, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 38
+    card:
+      type: 1
+      rank: 0
+      secondRank: 0
+      suit: 0
+      value: 0
+    blockedBy: 26000000
+    unlockAction:
+      type: 2
+      value: 1
+  - index: 38
+    localPosition: {x: 2.61, y: 18.38, z: 0}
+    localEulerAngles: {x: -0, y: 0, z: 0}
+    sortingOrder: 39
     card:
       type: 0
       rank: 0

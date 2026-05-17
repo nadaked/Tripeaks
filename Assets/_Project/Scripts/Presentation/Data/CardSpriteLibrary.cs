@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Core.Cards;
+using _Project.Scripts.Core.Cards;
+using TMPro;
 using UnityEngine;
 
 namespace _Project.Scripts.Presentation.Data
@@ -6,26 +7,28 @@ namespace _Project.Scripts.Presentation.Data
     [CreateAssetMenu(fileName = "CardSpriteLibrary", menuName = "Card Sprite Library")]
     public sealed class CardSpriteLibrary : ScriptableObject
     {
-        [Header("Diamond Sprites")]
-        [SerializeField] private Sprite[] diamondSprites;
-        [SerializeField] private Sprite[] diamondDualSprites;
-
-        [Header("Clubs Sprites")]
-        [SerializeField] private Sprite[] clubsSprites;
-        [SerializeField] private Sprite[] clubsDualSprites;
-
-        [Header("Heart Sprites")]
-        [SerializeField] private Sprite[] heartSprites;
-        [SerializeField] private Sprite[] heartDualSprites;
-
-        [Header("Spade Sprites")]
-        [SerializeField] private Sprite[] spadeSprites;
-        [SerializeField] private Sprite[] spadeDualSprites;
+        [Header("Fixed Face Sprites")]
+        [SerializeField] private Sprite clubsFaceSprite;
+        [SerializeField] private Sprite diamondFaceSprite;
+        [SerializeField] private Sprite heartFaceSprite;
+        [SerializeField] private Sprite spadeFaceSprite;
 
         [Header("Other Sprites")]
         [SerializeField] private Sprite backSprite;
         [SerializeField] private Sprite wildSprite;
         [SerializeField] private Sprite specialSprite;
+
+        [Header("Rank Fonts")]
+        [SerializeField] private TMP_FontAsset clubsFont;
+        [SerializeField] private TMP_FontAsset diamondFont;
+        [SerializeField] private TMP_FontAsset heartFont;
+        [SerializeField] private TMP_FontAsset spadeFont;
+
+        [Header("Rank Colors")]
+        [SerializeField] private Color clubsRankColor = Color.white;
+        [SerializeField] private Color diamondRankColor = Color.white;
+        [SerializeField] private Color heartRankColor = Color.white;
+        [SerializeField] private Color spadeRankColor = Color.white;
 
         public Sprite BackSprite => backSprite;
         public Sprite WildSprite => wildSprite;
@@ -43,76 +46,90 @@ namespace _Project.Scripts.Presentation.Data
             };
         }
 
+        public TMP_FontAsset GetRankFont(CardSuit suit)
+        {
+            return suit switch
+            {
+                CardSuit.Clubs => clubsFont,
+                CardSuit.Diamonds => diamondFont,
+                CardSuit.Hearts => heartFont,
+                CardSuit.Spades => spadeFont,
+                _ => null
+            };
+        }
+
+        public Color GetRankColor(CardSuit suit)
+        {
+            return suit switch
+            {
+                CardSuit.Clubs => clubsRankColor,
+                CardSuit.Diamonds => diamondRankColor,
+                CardSuit.Hearts => heartRankColor,
+                CardSuit.Spades => spadeRankColor,
+                _ => Color.white
+            };
+        }
+
+        public TMP_FontAsset GetSpecialFont()
+        {
+            return spadeFont != null ? spadeFont : clubsFont;
+        }
+
+        public static string GetPrimaryRankText(CardData card)
+        {
+            return GetRankText(card.Rank);
+        }
+
+        public static string GetSecondaryRankText(CardData card)
+        {
+            if (card.IsDualRank && card.SecondRank != CardRank.None)
+                return GetRankText(card.SecondRank);
+
+            return GetRankText(card.Rank);
+        }
+
+        public static string GetRankText(CardRank rank)
+        {
+            return rank switch
+            {
+                CardRank.Ace => "A",
+                CardRank.Two => "2",
+                CardRank.Three => "3",
+                CardRank.Four => "4",
+                CardRank.Five => "5",
+                CardRank.Six => "6",
+                CardRank.Seven => "7",
+                CardRank.Eight => "8",
+                CardRank.Nine => "9",
+                CardRank.Ten => "10",
+                CardRank.Jack => "J",
+                CardRank.Queen => "Q",
+                CardRank.King => "K",
+                _ => string.Empty
+            };
+        }
+
         private Sprite GetNormalSprite(CardData card)
         {
-            var array = GetNormalArray(card.Suit);
-
-            return GetSpriteFromArray(array, card.Rank);
+            return GetFaceSprite(card.Suit);
         }
 
         private Sprite GetDualSprite(CardData card)
         {
-            var array = GetDualArray(card.Suit);
-
-            return GetSpriteFromArray(array, card.Rank);
+            return GetFaceSprite(card.Suit);
         }
 
-        private Sprite[] GetNormalArray(CardSuit suit)
+        private Sprite GetFaceSprite(CardSuit suit)
         {
             return suit switch
             {
-                CardSuit.Diamonds => diamondSprites,
-                CardSuit.Clubs => clubsSprites,
-                CardSuit.Hearts => heartSprites,
-                CardSuit.Spades => spadeSprites,
+                CardSuit.Clubs => clubsFaceSprite,
+                CardSuit.Diamonds => diamondFaceSprite,
+                CardSuit.Hearts => heartFaceSprite,
+                CardSuit.Spades => spadeFaceSprite,
                 _ => null
             };
         }
 
-        private Sprite[] GetDualArray(CardSuit suit)
-        {
-            return suit switch
-            {
-                CardSuit.Diamonds => diamondDualSprites,
-                CardSuit.Clubs => clubsDualSprites,
-                CardSuit.Hearts => heartDualSprites,
-                CardSuit.Spades => spadeDualSprites,
-                _ => null
-            };
-        }
-
-        private static Sprite GetSpriteFromArray(Sprite[] array, CardRank rank)
-        {
-            if (array == null)
-                return null;
-
-            var index = GetRankIndex(rank);
-
-            if (index < 0 || index >= array.Length)
-                return null;
-
-            return array[index];
-        }
-
-        private static int GetRankIndex(CardRank rank)
-        {
-            return rank switch
-            {
-                CardRank.Ace => 0,
-                CardRank.Two => 1,
-                CardRank.Three => 2,
-                CardRank.Four => 3,
-                CardRank.Five => 4,
-                CardRank.Six => 5,
-                CardRank.Seven => 6,
-                CardRank.Eight => 7,
-                CardRank.Nine => 8,
-                CardRank.Ten => 9,
-                CardRank.Jack => 10,
-                CardRank.Queen => 11,
-                CardRank.King => 12,
-                _ => -1
-            };
-        }
     }
 }

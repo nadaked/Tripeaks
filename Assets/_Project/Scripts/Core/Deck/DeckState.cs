@@ -25,6 +25,11 @@ namespace _Project.Scripts.Core.Deck
             return _cards.Pop();
         }
 
+        public CardData[] GetCardsFromTop()
+        {
+            return _cards.ToArray();
+        }
+
         public void AddToBottom(IEnumerable<CardData> cards)
         {
             var current = _cards.ToArray();

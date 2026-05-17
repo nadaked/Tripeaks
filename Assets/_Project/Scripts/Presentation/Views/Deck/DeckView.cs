@@ -75,6 +75,7 @@ namespace _Project.Scripts.Presentation.Views.Deck
         {
             var deckCount = _presenter.State.Deck.Count;
             var visibleCount = Mathf.Min(deckCount, maxVisibleCards);
+            var cardsFromTop = _presenter.State.Deck.GetCardsFromTop();
             VisibleCardCount = visibleCount;
 
             gameObject.SetActive(deckCount > 0);
@@ -88,9 +89,19 @@ namespace _Project.Scripts.Presentation.Views.Deck
                 if (!active)
                     continue;
 
-                _cards[i].ShowBack();
-
                 var reverseIndex = visibleCount - 1 - i;
+                var cardIndexFromTop = reverseIndex;
+
+                if (cardIndexFromTop >= 0 &&
+                    cardIndexFromTop < cardsFromTop.Length &&
+                    cardsFromTop[cardIndexFromTop].IsWild)
+                {
+                    _cards[i].ShowCard(cardsFromTop[cardIndexFromTop], true);
+                }
+                else
+                {
+                    _cards[i].ShowBack();
+                }
                 
                 var isTopClickable = i == visibleCount - 1;
                 _cards[i].SetClickEnabled(isTopClickable);

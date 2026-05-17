@@ -13,33 +13,39 @@ MonoBehaviour:
   m_Name: UnityAudioServiceFactory
   m_EditorClassIdentifier: GameServices.Runtime::GameServices.GameServices.Runtime.Audio.UnityAudioServiceFactory
   enabledService: 1
-  musicClips: []
+  musicClips:
+  - id: clouds_over_tripeaks_1
+    clip: {fileID: 8300000, guid: e7730dff5524e064985600f5d796cb2f, type: 3}
+  - id: clouds_over_tripeaks_2
+    clip: {fileID: 8300000, guid: 525fd3d3e7299394dba4c1682b4b635e, type: 3}
   sfxClips:
   - id: card_take
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: de5d6f4cb35a3e349bb928887603226d, type: 3}
   - id: deck_draw
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 7ba5f348663f2da43a5abfab9a4eb09f, type: 3}
   - id: card_reveal
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: c23d8a8da73056c4a8b503d35af3b907, type: 3}
   - id: reward_card
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 33713d31432863a4c8816d57af275124, type: 3}
+  - id: wild
+    clip: {fileID: 8300000, guid: 21428a559622c3a43abb0e3f23faf335, type: 3}
   - id: undo
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: d65f3b9ea2c5e3a4e99d9c65b3624b40, type: 3}
   - id: invalid_move
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 6abd4e584c6fef84597ab96be768cda8, type: 3}
   - id: combo_1
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 4601c052e3f1e8f449529d34787d2a04, type: 3}
   - id: combo_2
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: dab2e5215d7c0fb4eb7cfba9269c7059, type: 3}
   - id: combo_3
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 42ca48537bbf4bd4f97aa9fb77ba9376, type: 3}
   masterVolume: 1
-  musicVolume: 1
+  musicVolume: 0.2
   sfxVolume: 1
   sfxSourcePoolSize: 8
   minSfxPitch: 0.5
   maxSfxPitch: 2
-  loopMusic: 1
+  loopMusic: 0
   persistAcrossScenes: 1
   logWarnings: 1
   masterOutput: {fileID: 24300002, guid: f61b3b3a5705fc046b0dd4dd11f21a5c, type: 2}
