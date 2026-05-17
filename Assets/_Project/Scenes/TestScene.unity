@@ -596,6 +596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 161574659}
   - component: {fileID: 161574658}
+  - component: {fileID: 161574660}
   m_Layer: 0
   m_Name: GameAnimationDirector
   m_TagString: Untagged
@@ -655,6 +656,38 @@ MonoBehaviour:
   initialDeckDealLift: 0.4
   initialDeckAccordionDuration: 0.24
   initialDeckAccordionInterval: 0.012
+--- !u!114 &161574660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161574657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed60ebed94d544d08297d853d34abf30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Presentation.Audio.TripeaksAudioDirector
+  gameBootstrapper: {fileID: 948505004}
+  servicesProvider: {fileID: 11400000, guid: 42fc2d90a932b754ab434ed1396f6b13, type: 2}
+  boardCardSfxId: card_take
+  deckDrawSfxId: deck_draw
+  revealSfxId: card_reveal
+  rewardSfxId: reward_card
+  undoSfxId: undo
+  invalidMoveSfxId: invalid_move
+  playGameServicesSfx: 1
+  comboSfxIds:
+  - combo_1
+  - combo_2
+  - combo_3
+  comboVolumeScale: 0.9
+  usePingPongScale: 1
+  phrasePitchDropSemitones: 0.5
+  minPitch: 0.72
+  maxPitch: 1.8
+  resetComboOnDeckDraw: 1
+  resetComboOnUndo: 1
 --- !u!4 &161574659
 Transform:
   m_ObjectHideFlags: 0

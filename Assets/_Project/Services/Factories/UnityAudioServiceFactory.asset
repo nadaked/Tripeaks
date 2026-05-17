@@ -14,10 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameServices.Runtime::GameServices.GameServices.Runtime.Audio.UnityAudioServiceFactory
   enabledService: 1
   musicClips: []
-  sfxClips: []
+  sfxClips:
+  - id: card_take
+    clip: {fileID: 0}
+  - id: deck_draw
+    clip: {fileID: 0}
+  - id: card_reveal
+    clip: {fileID: 0}
+  - id: reward_card
+    clip: {fileID: 0}
+  - id: undo
+    clip: {fileID: 0}
+  - id: invalid_move
+    clip: {fileID: 0}
+  - id: combo_1
+    clip: {fileID: 0}
+  - id: combo_2
+    clip: {fileID: 0}
+  - id: combo_3
+    clip: {fileID: 0}
   masterVolume: 1
   musicVolume: 1
   sfxVolume: 1
+  sfxSourcePoolSize: 8
+  minSfxPitch: 0.5
+  maxSfxPitch: 2
   loopMusic: 1
   persistAcrossScenes: 1
   logWarnings: 1
